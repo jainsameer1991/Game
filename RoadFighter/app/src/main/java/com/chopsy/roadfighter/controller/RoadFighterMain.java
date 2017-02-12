@@ -1,9 +1,11 @@
-package com.chopsy.roadfighter;
+package com.chopsy.roadfighter.controller;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.chopsy.roadfighter.R;
 
 
 public class RoadFighterMain extends ActionBarActivity {
