@@ -1,1 +1,1 @@
-Setting game
+This repository contains android games that are developed by Sameer Jain and Tushan Jain.
