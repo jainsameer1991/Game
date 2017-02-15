@@ -23,7 +23,7 @@
     <!--android:layout_marginRight="20dp"-->
 
     <!--android:layout_height="wrap_content"/>-->
-    <com.chopsy.roadfighter.view.RoadView
+    <com.chopsy.roadfighter.view.Road
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 </LinearLayout>

@@ -15,7 +15,7 @@ import android.view.View;
 
 import com.chopsy.roadfighter.R;
 
-public class RoadView extends View implements View.OnTouchListener {
+public class Road extends View implements View.OnTouchListener {
     private Paint mPaint;
     private DashPathEffect mDashPathEffect;
     private Path mPath;
@@ -25,7 +25,7 @@ public class RoadView extends View implements View.OnTouchListener {
     private Handler mHandler;
 
 
-    public RoadView(Context context, AttributeSet attrs) {
+    public Road(Context context, AttributeSet attrs) {
         super(context, attrs);
         setBackgroundColor(Color.GREEN);
         mPaint = new Paint();
