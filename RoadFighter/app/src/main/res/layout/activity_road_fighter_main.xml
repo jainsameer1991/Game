@@ -1,16 +1,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".RoadFighterMain">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".RoadFighterMain">
 
-    <ImageView
-        android:id="@+id/roadView"
+    <!--<ImageView-->
+    <!--android:id="@+id/menuBackground"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:src="@drawable/menu_background"-->
+    <!--/>-->
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/button_start_race"-->
+    <!--android:src="@drawable/start_race"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+
+    <!--android:layout_height="wrap_content"/>-->
+    <com.chopsy.roadfighter.view.RoadView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image_road"
-        />
-
+        android:layout_height="fill_parent"/>
 </LinearLayout>
