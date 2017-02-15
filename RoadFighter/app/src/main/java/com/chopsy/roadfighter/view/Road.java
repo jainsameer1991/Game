@@ -1,8 +1,6 @@
 package com.chopsy.roadfighter.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -13,14 +11,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.chopsy.roadfighter.R;
-
 public class Road extends View implements View.OnTouchListener {
     private Paint mPaint;
     private DashPathEffect mDashPathEffect;
     private Path mPath;
     private int mWidth;
-    private int mHeight;
     boolean blackFirst = true;
     private Handler mHandler;
 
@@ -42,7 +37,6 @@ public class Road extends View implements View.OnTouchListener {
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
         super.onSizeChanged(w, h, oldW, oldH);
         mWidth = w;
-        mHeight = h;
         mPath = new Path();
         mPath.reset();
         mPath.moveTo(mWidth / 3 + mWidth / 6, 0);
@@ -53,8 +47,6 @@ public class Road extends View implements View.OnTouchListener {
     @Override
     synchronized public void onDraw(Canvas canvas) {
 
-        Bitmap b1 = BitmapFactory.decodeResource(getResources(), R.drawable.image_road);
-        canvas.drawBitmap(b1, 0, 0, mPaint);
         mPaint.setStrokeWidth(10);
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
