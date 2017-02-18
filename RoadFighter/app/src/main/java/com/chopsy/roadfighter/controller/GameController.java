@@ -1,18 +1,19 @@
 package com.chopsy.roadfighter.controller;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chopsy.roadfighter.R;
 
 
-public class RoadFighterMain extends ActionBarActivity {
+public class GameController extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GameContext.registerGameController(this);
         setContentView(R.layout.activity_road_fighter_main);
     }
 
@@ -37,5 +38,17 @@ public class RoadFighterMain extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GameContext.getPlayerCarController().startSensorManager();
+    }
+
+    @Override
+    protected void onStop() {
+        GameContext.getPlayerCarController().stopSensorManager();
+        super.onStop();
     }
 }
