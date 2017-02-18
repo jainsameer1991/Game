@@ -8,16 +8,18 @@ import android.view.MenuItem;
 import com.chopsy.roadfighter.R;
 
 
-public class RoadFighterMain extends ActionBarActivity {
+public class GameController extends ActionBarActivity {
 
-    private CarController mCarController;
+//    private CarController mCarController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GameContext.registerGameController(this);
         setContentView(R.layout.activity_road_fighter_main);
-        mCarController = new CarController(this);
+//        mCarController = new CarController(this);
         // Todo: Initialize all controllers
+
     }
 
 
@@ -46,12 +48,12 @@ public class RoadFighterMain extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mCarController.startSensorManager();
+        GameContext.getPlayerCarController().startSensorManager();
     }
 
     @Override
     protected void onStop() {
-        mCarController.stopSensorManager();
+        GameContext.getPlayerCarController().stopSensorManager();
         super.onStop();
     }
 }

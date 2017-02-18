@@ -7,15 +7,19 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.chopsy.roadfighter.controller.PlayerCarController;
+
 public class PlayerCarView extends View {
 
     private int mWidth;
     private int mHeight;
     private int left;
     private Paint mPaint;
+    private PlayerCarController mPlayerCarController;
 
     public PlayerCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mPlayerCarController = new PlayerCarController(this);
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         left = mWidth / 3 + 5;

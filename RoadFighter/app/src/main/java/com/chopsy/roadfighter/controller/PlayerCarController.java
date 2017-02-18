@@ -6,17 +6,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.chopsy.roadfighter.R;
 import com.chopsy.roadfighter.view.PlayerCarView;
 
-public class CarController implements SensorEventListener {
+public class PlayerCarController implements SensorEventListener {
 
     private PlayerCarView mPlayerCarView;
     private SensorManager mSensorManager;
 
-    public CarController(RoadFighterMain gameController) {
-        mPlayerCarView = (PlayerCarView) gameController.findViewById(R.id.car);
-        mSensorManager = (SensorManager) gameController.getSystemService(Context.SENSOR_SERVICE);
+    public PlayerCarController(PlayerCarView playerCarView) {
+        mPlayerCarView = playerCarView;
+        GameContext.registerPlayerCarController(this);
+        mSensorManager = (SensorManager) GameContext.getGameController().getSystemService(Context
+                .SENSOR_SERVICE);
     }
 
     @Override
