@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Road extends View implements View.OnTouchListener {
+public class RoadView extends View implements View.OnTouchListener {
     private Paint mPaint;
     private DashPathEffect mDashPathEffect;
     private Path mPath;
@@ -20,9 +20,8 @@ public class Road extends View implements View.OnTouchListener {
     private Handler mHandler;
 
 
-    public Road(Context context, AttributeSet attrs) {
+    public RoadView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setBackgroundColor(Color.GREEN);
         mPaint = new Paint();
         mDashPathEffect = new DashPathEffect(new float[]{50, 50}, 0);
         mPath = new Path();
@@ -82,18 +81,22 @@ public class Road extends View implements View.OnTouchListener {
     Runnable mAction = new Runnable() {
         @Override
         public void run() {
-            mPath.reset();
-
-            if (blackFirst) {
-                mPath.moveTo(mWidth / 3 + mWidth / 6, 0);
-                mPath.lineTo(mWidth / 3 + mWidth / 6, getHeight());
-            } else {
-                mPath.moveTo(mWidth / 3 + mWidth / 6, 50);
-                mPath.lineTo(mWidth / 3 + mWidth / 6, 50 + getHeight());
-            }
-            blackFirst = !blackFirst;
-            reDraw();
+            updateRoadView();
             mHandler.postDelayed(this, 500);
         }
     };
+
+    private void updateRoadView() {
+        mPath.reset();
+
+        if (blackFirst) {
+            mPath.moveTo(mWidth / 3 + mWidth / 6, 0);
+            mPath.lineTo(mWidth / 3 + mWidth / 6, getHeight());
+        } else {
+            mPath.moveTo(mWidth / 3 + mWidth / 6, 50);
+            mPath.lineTo(mWidth / 3 + mWidth / 6, 50 + getHeight());
+        }
+        blackFirst = !blackFirst;
+        reDraw();
+    }
 }

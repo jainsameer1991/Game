@@ -7,16 +7,17 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class Car extends View {
+public class PlayerCarView extends View {
 
     private int mWidth;
     private int mHeight;
     private int left;
     private Paint mPaint;
 
-    public Car(Context context, AttributeSet attrs) {
+    public PlayerCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPaint = new Paint();
+        mPaint.setStyle(Paint.Style.STROKE);
         left = mWidth / 3 + 5;
     }
 

@@ -23,12 +23,16 @@
     <!--android:layout_marginRight="20dp"-->
 
     <!--android:layout_height="wrap_content"/>-->
-    <com.chopsy.roadfighter.view.Road
+    <com.chopsy.roadfighter.view.RoadView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <com.chopsy.roadfighter.view.Car
+    <com.chopsy.roadfighter.view.PlayerCarView
         android:id="@+id/car"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <com.chopsy.roadfighter.view.ScoreboardView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 </FrameLayout>
