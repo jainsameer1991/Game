@@ -13,13 +13,10 @@ public class CarController implements SensorEventListener {
 
     private PlayerCarView mPlayerCarView;
     private SensorManager mSensorManager;
-    private RoadFighterMain mGameController;
 
     public CarController(RoadFighterMain gameController) {
-        mGameController = gameController;
         mPlayerCarView = (PlayerCarView) gameController.findViewById(R.id.car);
-        mSensorManager = (SensorManager) mGameController.getSystemService(Context.SENSOR_SERVICE);
-
+        mSensorManager = (SensorManager) gameController.getSystemService(Context.SENSOR_SERVICE);
     }
 
     @Override
