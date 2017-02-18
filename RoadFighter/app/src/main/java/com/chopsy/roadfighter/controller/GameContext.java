@@ -7,6 +7,7 @@ public class GameContext {
     private static GameController mGameController;
     private static PlayerCarController mPlayerCarController;
     private static RoadController mRoadController;
+    private static ScoreboardController mScoreboardController;
 
     public static void registerGameController(GameController gameController) {
         mGameController = gameController;
@@ -30,6 +31,14 @@ public class GameContext {
 
     public static RoadController getRoadController() {
         return mRoadController;
+    }
+
+    public static void registerScoreboardController(ScoreboardController scoreboardController) {
+        mScoreboardController = scoreboardController;
+    }
+
+    public static ScoreboardController getScoreboardController() {
+        return mScoreboardController;
     }
 }
 

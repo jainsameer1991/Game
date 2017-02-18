@@ -64,6 +64,7 @@ public class ScoreboardView extends View {
     public void setTime(int time) {
         mTime = time;
     }
+
     Runnable mAction = new Runnable() {
         @Override
         public void run() {
