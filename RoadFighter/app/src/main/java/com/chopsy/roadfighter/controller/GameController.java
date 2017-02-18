@@ -10,16 +10,11 @@ import com.chopsy.roadfighter.R;
 
 public class GameController extends ActionBarActivity {
 
-//    private CarController mCarController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GameContext.registerGameController(this);
         setContentView(R.layout.activity_road_fighter_main);
-//        mCarController = new CarController(this);
-        // Todo: Initialize all controllers
-
     }
 
 

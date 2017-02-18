@@ -44,4 +44,8 @@ public class PlayerCarController implements SensorEventListener {
     public void stopSensorManager() {
         mSensorManager.unregisterListener(this);
     }
+
+    public void updateRoadView() {
+        GameContext.getRoadController().updateRoadView();
+    }
 }

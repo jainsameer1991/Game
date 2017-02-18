@@ -4,22 +4,26 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.chopsy.roadfighter.controller.PlayerCarController;
 
-public class PlayerCarView extends View {
+public class PlayerCarView extends View implements View.OnTouchListener{
 
     private int mWidth;
     private int mHeight;
     private int left;
     private Paint mPaint;
+    private Handler mHandler;
     private PlayerCarController mPlayerCarController;
 
     public PlayerCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPlayerCarController = new PlayerCarController(this);
+        setOnTouchListener(this);
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         left = mWidth / 3 + 5;
@@ -58,4 +62,28 @@ public class PlayerCarView extends View {
     protected void reDraw() {
         this.invalidate();
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mHandler != null) return true;
+                mHandler = new Handler();
+                mHandler.postDelayed(mAction, 500);
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mHandler == null) return true;
+                mHandler.removeCallbacks(mAction);
+                mHandler = null;
+                break;
+        }
+        return true;
+    }
+    Runnable mAction = new Runnable() {
+        @Override
+        public void run() {
+            mPlayerCarController.updateRoadView();
+            mHandler.postDelayed(this, 500);
+        }
+    };
 }

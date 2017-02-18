@@ -6,6 +6,7 @@ package com.chopsy.roadfighter.controller;
 public class GameContext {
     private static GameController mGameController;
     private static PlayerCarController mPlayerCarController;
+    private static RoadController mRoadController;
 
     public static void registerGameController(GameController gameController) {
         mGameController = gameController;
@@ -21,6 +22,14 @@ public class GameContext {
 
     public static PlayerCarController getPlayerCarController() {
         return mPlayerCarController;
+    }
+
+    public static void registerRoadController(RoadController roadController) {
+        mRoadController = roadController;
+    }
+
+    public static RoadController getRoadController() {
+        return mRoadController;
     }
 }
 

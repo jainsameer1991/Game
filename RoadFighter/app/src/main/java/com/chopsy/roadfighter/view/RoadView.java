@@ -6,30 +6,28 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
-public class RoadView extends View implements View.OnTouchListener {
+import com.chopsy.roadfighter.controller.RoadController;
+
+public class RoadView extends View {
     private Paint mPaint;
     private DashPathEffect mDashPathEffect;
     private Path mPath;
     private int mWidth;
     boolean blackFirst = true;
-    private Handler mHandler;
 
 
     public RoadView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        new RoadController(this);
         mPaint = new Paint();
         mDashPathEffect = new DashPathEffect(new float[]{50, 50}, 0);
         mPath = new Path();
         mPath.reset();
         mPath.moveTo(getWidth() / 3 + getWidth() / 6, 0);
         mPath.lineTo(getWidth() / 3 + getWidth() / 6, getHeight());
-        setOnTouchListener(this);
-//        mPath.close();
     }
 
     @Override
@@ -61,32 +59,7 @@ public class RoadView extends View implements View.OnTouchListener {
         this.invalidate();
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (mHandler != null) return true;
-                mHandler = new Handler();
-                mHandler.postDelayed(mAction, 500);
-                break;
-            case MotionEvent.ACTION_UP:
-                if (mHandler == null) return true;
-                mHandler.removeCallbacks(mAction);
-                mHandler = null;
-                break;
-        }
-        return true;
-    }
-
-    Runnable mAction = new Runnable() {
-        @Override
-        public void run() {
-            updateRoadView();
-            mHandler.postDelayed(this, 500);
-        }
-    };
-
-    private void updateRoadView() {
+    public void updateRoadView() {
         mPath.reset();
 
         if (blackFirst) {
