@@ -45,12 +45,16 @@ public class RoadView extends View {
     synchronized public void onDraw(Canvas canvas) {
 
         mPaint.setStrokeWidth(10);
-        mPaint.setColor(Color.BLACK);
+        Color roadColor = new Color();
+
+        mPaint.setColor(Color.parseColor("#757575"));
+        mPaint.setStyle(Paint.Style.FILL);
+
+//        canvas.drawLine(getWidth() / 3, 0, getWidth() / 3, getHeight(), mPaint);
+//        canvas.drawLine(2 * getWidth() / 3, 0, 2 * getWidth() / 3, getHeight(), mPaint);
+        canvas.drawRect(getWidth() / 3, 0, 2 * getWidth() / 3, getHeight(), mPaint);
+        mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.STROKE);
-
-        canvas.drawLine(getWidth() / 3, 0, getWidth() / 3, getHeight(), mPaint);
-        canvas.drawLine(2 * getWidth() / 3, 0, 2 * getWidth() / 3, getHeight(), mPaint);
-
         mPaint.setPathEffect(mDashPathEffect);
         canvas.drawPath(mPath, mPaint);
     }
