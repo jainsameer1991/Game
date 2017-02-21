@@ -36,7 +36,7 @@ public class ScoreboardView extends View {
 
         mPaint.setColor(Color.BLACK);
         mPaint.setTextSize(30);
-        canvas.drawRect(2 * mWidth / 3 + 10, mHeight / 6 - 10, mWidth - 10, mHeight / 6 + 10,
+        canvas.drawRect(2 * mWidth / 3 + 10, mHeight / 6 - 30, mWidth - 10, mHeight / 6 + 90,
                 mPaint);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         canvas.drawText("Time: " + mScoreboardController.getTime(), 2 * mWidth / 3 + 15,

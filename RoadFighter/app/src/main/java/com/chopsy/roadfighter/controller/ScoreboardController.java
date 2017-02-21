@@ -39,4 +39,16 @@ public class ScoreboardController {
     public int getCurrentSpeed() {
         return mCurrentSpeed;
     }
+
+    public void setSpeed(int speed) {
+        mCurrentSpeed = speed;
+    }
+
+    public void refresh() {
+        mScoreboardView.reDraw();
+    }
+
+    public void setDistance(int distance) {
+        mDistanceCovered = distance;
+    }
 }
