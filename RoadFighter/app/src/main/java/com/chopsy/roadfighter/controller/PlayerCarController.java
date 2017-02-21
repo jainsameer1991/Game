@@ -12,12 +12,15 @@ public class PlayerCarController implements SensorEventListener {
 
     private PlayerCarView mPlayerCarView;
     private SensorManager mSensorManager;
+    private ScoreboardController scoreboardController;
+
 
     public PlayerCarController(PlayerCarView playerCarView) {
         mPlayerCarView = playerCarView;
         GameContext.registerPlayerCarController(this);
         mSensorManager = (SensorManager) GameContext.getGameController().getSystemService(Context
                 .SENSOR_SERVICE);
+        scoreboardController = GameContext.getScoreboardController();
     }
 
     @Override
@@ -47,5 +50,15 @@ public class PlayerCarController implements SensorEventListener {
 
     public void updateRoadView() {
         GameContext.getRoadController().updateRoadView();
+    }
+
+    public void updateScoreboardSpeed(int speed) {
+
+        scoreboardController.setSpeed(speed);
+    }
+
+    public void updateScoreboardDistance(int distance) {
+        scoreboardController.setDistance(distance);
+        scoreboardController.refresh();
     }
 }

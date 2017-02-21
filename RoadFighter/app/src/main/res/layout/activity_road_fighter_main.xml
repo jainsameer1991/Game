@@ -27,12 +27,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <com.chopsy.roadfighter.view.PlayerCarView
-        android:id="@+id/car"
+    <com.chopsy.roadfighter.view.ScoreboardView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <com.chopsy.roadfighter.view.ScoreboardView
+    <com.chopsy.roadfighter.view.PlayerCarView
+        android:id="@+id/car"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 </FrameLayout>
