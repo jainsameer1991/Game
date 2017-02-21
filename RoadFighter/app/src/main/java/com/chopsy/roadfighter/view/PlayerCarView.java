@@ -115,6 +115,7 @@ public class PlayerCarView extends View implements View.OnTouchListener {
 
             }
             distance += mSpeed * 5;
+            mPlayerCarController.updateBackground(mSpeed);
             mPlayerCarController.updateScoreboardDistance(distance);
             mHandler.postDelayed(this, timeInterval);
             mPlayerCarController.updateRoadView();
@@ -142,6 +143,7 @@ public class PlayerCarView extends View implements View.OnTouchListener {
                 if (mSpeed < 1) {
                     mSpeed = 1;
                 }
+                mPlayerCarController.updateBackground(mSpeed);
                 mPlayerCarController.updateScoreboardDistance(distance);
                 mPlayerCarController.updateRoadView();
                 mPlayerCarController.updateScoreboardSpeed(mSpeed);

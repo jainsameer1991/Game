@@ -4,17 +4,29 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.chopsy.roadfighter.R;
 
 
 public class GameController extends ActionBarActivity {
 
+    private float top1 = 0;
+    private float top2 = 0;
+    private ImageView backgroundOne;
+    private ImageView backgroundTwo;
+    private int height;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GameContext.registerGameController(this);
         setContentView(R.layout.activity_road_fighter_main);
+        backgroundOne = (ImageView) findViewById(R.id.game_background1);
+        backgroundTwo = (ImageView) findViewById(R.id.game_background2);
+        height = backgroundOne.getHeight();
+        top1 = -1.0f * backgroundOne.getHeight();
+        top2 = 0;
     }
 
 
@@ -50,5 +62,24 @@ public class GameController extends ActionBarActivity {
     protected void onStop() {
         GameContext.getPlayerCarController().stopSensorManager();
         super.onStop();
+    }
+
+    public void updateBackground(int speed) {
+        height = backgroundOne.getHeight();
+        float translateY = height * speed * 0.01f;
+        top1 += translateY;
+        top2 += translateY;
+        if (top1 > (float) height) {
+            top1 = -1.0f * backgroundOne.getHeight();
+        }
+        if (top2 > height) {
+            top2 = -1.0f * backgroundOne.getHeight();
+        }
+        if (top2 < 0) {
+            backgroundOne.setTranslationY(top2 + height);
+        } else {
+            backgroundOne.setTranslationY(top2 - height);
+        }
+        backgroundTwo.setTranslationY(top2);
     }
 }
