@@ -35,16 +35,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <com.chopsy.roadfighter.view.BotCarView
-        android:id="@+id/enemy_car"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-
     <com.chopsy.roadfighter.view.ScoreboardView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <com.chopsy.roadfighter.view.PlayerCarView
+    <com.chopsy.roadfighter.view.CarsView
         android:id="@+id/car"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

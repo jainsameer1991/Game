@@ -5,25 +5,24 @@ package com.chopsy.roadfighter.controller;
  */
 public class GameContext {
     private static GameController mGameController;
-    private static PlayerCarController mPlayerCarController;
+    private static CarsController mCarsController;
     private static RoadController mRoadController;
     private static ScoreboardController mScoreboardController;
-    private static BotCarController mBotCarController;
 
     public static void registerGameController(GameController gameController) {
         mGameController = gameController;
     }
 
-    public static void registerPlayerCarController(PlayerCarController playerCarController) {
-        mPlayerCarController = playerCarController;
+    public static void registerPlayerCarController(CarsController carsController) {
+        mCarsController = carsController;
     }
 
     public static GameController getGameController() {
         return mGameController;
     }
 
-    public static PlayerCarController getPlayerCarController() {
-        return mPlayerCarController;
+    public static CarsController getPlayerCarController() {
+        return mCarsController;
     }
 
     public static void registerRoadController(RoadController roadController) {
@@ -40,14 +39,6 @@ public class GameContext {
 
     public static ScoreboardController getScoreboardController() {
         return mScoreboardController;
-    }
-
-    public static void registerEnemyCarController(BotCarController botCarController) {
-        mBotCarController = botCarController;
-    }
-
-    public static BotCarController getEnemyCarController() {
-        return mBotCarController;
     }
 }
 

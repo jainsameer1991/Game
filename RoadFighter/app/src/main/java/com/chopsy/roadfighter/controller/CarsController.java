@@ -7,30 +7,35 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 
-import com.chopsy.roadfighter.view.PlayerCarView;
+import com.chopsy.roadfighter.view.CarsView;
 
-public class PlayerCarController implements SensorEventListener {
+public class CarsController implements SensorEventListener {
 
-    private PlayerCarView mPlayerCarView;
+    private CarsView mCarsView;
     private SensorManager mSensorManager;
     private ScoreboardController mScoreboardController;
     private GameController mGameController;
-    private Handler mHandler;
+    private Handler mPlayerCarSpeedHandler;
+    private Handler mBotCarSpeedHandler;
     private long timeInterval = 500;
     private int mSpeed = 0;
     private int distance = 0;
 
-    private BotCarController mBotCarController;
+    private int mBotCurrentSpeed = 2;
+    private final static int minSpeed = 2;
 
 
-    public PlayerCarController(PlayerCarView playerCarView) {
-        mPlayerCarView = playerCarView;
+    public CarsController(CarsView carsView) {
+        mCarsView = carsView;
         GameContext.registerPlayerCarController(this);
         mGameController = GameContext.getGameController();
         mScoreboardController = GameContext.getScoreboardController();
-        mBotCarController = GameContext.getEnemyCarController();
         mSensorManager = (SensorManager) mGameController.getSystemService(Context
                 .SENSOR_SERVICE);
+
+        mBotCurrentSpeed = minSpeed;
+        mBotCarSpeedHandler = new Handler();
+        mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1000);
 
     }
 
@@ -41,7 +46,7 @@ public class PlayerCarController implements SensorEventListener {
                 return;
             }
             boolean turnLeft = event.values[0] > 0;
-            mPlayerCarView.updateView(turnLeft);
+            mCarsView.updateView(turnLeft);
         }
     }
 
@@ -78,25 +83,24 @@ public class PlayerCarController implements SensorEventListener {
     }
 
     public boolean performActionUp() {
-        if (mHandler == null) return true;
-        mHandler.removeCallbacks(increaseSpeedAction);
-        mHandler.postDelayed(decreaseSpeedAction, timeInterval);
+        if (mPlayerCarSpeedHandler == null) return true;
+        mPlayerCarSpeedHandler.removeCallbacks(increasePlayerCarSpeedAction);
+        mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
         return false;
     }
 
     public boolean performActionDown() {
-        if (mHandler != null) {
-            mHandler.removeCallbacks(decreaseSpeedAction);
-//                    mHandler = null;
-            mHandler.postDelayed(increaseSpeedAction, timeInterval);
+        if (mPlayerCarSpeedHandler != null) {
+            mPlayerCarSpeedHandler.removeCallbacks(decreasePlayerCarSpeedAction);
+            mPlayerCarSpeedHandler.postDelayed(increasePlayerCarSpeedAction, timeInterval);
             return true;
         }
-        mHandler = new Handler();
-        mHandler.postDelayed(increaseSpeedAction, timeInterval);
+        mPlayerCarSpeedHandler = new Handler();
+        mPlayerCarSpeedHandler.postDelayed(increasePlayerCarSpeedAction, timeInterval);
         return false;
     }
 
-    Runnable increaseSpeedAction = new Runnable() {
+    Runnable increasePlayerCarSpeedAction = new Runnable() {
         @Override
         public void run() {
 
@@ -113,26 +117,26 @@ public class PlayerCarController implements SensorEventListener {
             updateBotCarSpeed(mSpeed / 5 * 10);
             updateBackground(mSpeed);
             updateScoreboardDistance(distance);
-            mHandler.postDelayed(this, timeInterval);
+            mPlayerCarSpeedHandler.postDelayed(this, timeInterval);
             updateRoadView();
         }
     };
 
-    Runnable decreaseSpeedAction = new Runnable() {
+    Runnable decreasePlayerCarSpeedAction = new Runnable() {
         @Override
         public void run() {
 
 
             if (timeInterval >= 500) {
                 timeInterval = 500;
-                mHandler.removeCallbacks(decreaseSpeedAction);
-                mHandler.removeCallbacks(increaseSpeedAction);
+                mPlayerCarSpeedHandler.removeCallbacks(decreasePlayerCarSpeedAction);
+                mPlayerCarSpeedHandler.removeCallbacks(increasePlayerCarSpeedAction);
                 timeInterval = 500;
                 mSpeed = 0;
                 updateRoadView();
                 updateScoreboardSpeed(mSpeed);
                 updateBotCarSpeed(mSpeed / 500 * 10);
-                mHandler = null;
+                mPlayerCarSpeedHandler = null;
             } else {
                 timeInterval += 20;
                 distance += mSpeed * 20;
@@ -145,12 +149,31 @@ public class PlayerCarController implements SensorEventListener {
                 updateScoreboardDistance(distance);
                 updateRoadView();
                 updateScoreboardSpeed(mSpeed);
-                mHandler.postDelayed(this, timeInterval);
+                mPlayerCarSpeedHandler.postDelayed(this, timeInterval);
             }
         }
     };
 
+    Runnable botCarSpeedControlAction = new Runnable() {
+        @Override
+        public void run() {
+            updateBotCarPosition();
+            mBotCarSpeedHandler.postDelayed(this, 10);
+        }
+    };
+
     private void updateBotCarSpeed(int playerCarSpeed) {
-        mBotCarController.updateSpeed(playerCarSpeed);
+        mBotCurrentSpeed = minSpeed + playerCarSpeed;
+    }
+
+    public void updateBotCarPosition() {
+        int distanceCovered = mBotCurrentSpeed * mCarsView.getHeight() / (102 * 10);
+        int carPos = mCarsView.getBotCarYPos();
+        carPos += distanceCovered;
+        if (carPos > mCarsView.getHeight()) {
+            carPos = 0;
+        }
+        mCarsView.setBotCarYPos(carPos);
+        mCarsView.reDraw();
     }
 }
