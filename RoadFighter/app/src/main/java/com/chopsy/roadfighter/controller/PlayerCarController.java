@@ -19,15 +19,20 @@ public class PlayerCarController implements SensorEventListener {
     private long timeInterval = 500;
     private int mSpeed = 0;
     private int distance = 0;
+    private static final int maxSpeed = 100;
+
+    private BotCarController mBotCarController;
 
 
     public PlayerCarController(PlayerCarView playerCarView) {
         mPlayerCarView = playerCarView;
         GameContext.registerPlayerCarController(this);
         mGameController = GameContext.getGameController();
+        mScoreboardController = GameContext.getScoreboardController();
+        mBotCarController = GameContext.getEnemyCarController();
         mSensorManager = (SensorManager) mGameController.getSystemService(Context
                 .SENSOR_SERVICE);
-        mScoreboardController = GameContext.getScoreboardController();
+
     }
 
     @Override
@@ -98,15 +103,15 @@ public class PlayerCarController implements SensorEventListener {
 
             if (timeInterval <= 1) {
                 timeInterval = 1;
-//                mHandler.removeCallbacks(increaseSpeedAction);
-//                mHandler = null;
             } else {
                 timeInterval -= 5;
                 mSpeed++;
+                updateBotCarSpeed((int)(mSpeed/5*10));
                 updateScoreboardSpeed(mSpeed);
 
             }
             distance += mSpeed * 5;
+            updateBotCarSpeed((int)(mSpeed/5*10));
             updateBackground(mSpeed);
             updateScoreboardDistance(distance);
             mHandler.postDelayed(this, timeInterval);
@@ -127,6 +132,7 @@ public class PlayerCarController implements SensorEventListener {
                 mSpeed = 0;
                 updateRoadView();
                 updateScoreboardSpeed(mSpeed);
+                updateBotCarSpeed((int)(mSpeed/500*10));
                 mHandler = null;
             } else {
                 timeInterval += 20;
@@ -135,6 +141,7 @@ public class PlayerCarController implements SensorEventListener {
                 if (mSpeed < 1) {
                     mSpeed = 1;
                 }
+                updateBotCarSpeed((int)(mSpeed/5*10));
                 updateBackground(mSpeed);
                 updateScoreboardDistance(distance);
                 updateRoadView();
@@ -143,4 +150,8 @@ public class PlayerCarController implements SensorEventListener {
             }
         }
     };
+
+    private void updateBotCarSpeed(int playerCarSpeed) {
+        mBotCarController.updateSpeed(playerCarSpeed);
+    }
 }

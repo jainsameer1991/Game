@@ -12,9 +12,12 @@ public class ScoreboardController {
     private int mDistanceCovered;
     private int mCurrentSpeed;
 
+    private BotCarController mBotCarController;
+
     public ScoreboardController(ScoreboardView scoreboardView) {
         mScoreboardView = scoreboardView;
         GameContext.registerScoreboardController(this);
+        mBotCarController = GameContext.getEnemyCarController();
         mHandler = new Handler();
         mHandler.postDelayed(mAction, 1000);
     }
@@ -24,7 +27,8 @@ public class ScoreboardController {
         public void run() {
             mTime++;
             mScoreboardView.reDraw();
-            mHandler.postDelayed(this, 1000);
+            mBotCarController.updateCarPosition();
+            mHandler.postDelayed(this, 10);
         }
     };
 

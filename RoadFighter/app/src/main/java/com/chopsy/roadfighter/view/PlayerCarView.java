@@ -14,7 +14,7 @@ import com.chopsy.roadfighter.controller.PlayerCarController;
 
 public class PlayerCarView extends AbstractDrawableView implements View.OnTouchListener {
 
-   private int left;
+   private int mRoadLeftEnd;
    private PlayerCarController mPlayerCarController;
 
     public PlayerCarView(Context context, AttributeSet attrs) {
@@ -23,13 +23,13 @@ public class PlayerCarView extends AbstractDrawableView implements View.OnTouchL
         setOnTouchListener(this);
 //        mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
-        left = mWidth / 3 + 5;
+        mRoadLeftEnd = mWidth / 3 + 5;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
         super.onSizeChanged(w, h, oldW, oldH);
-        left = mWidth / 3 + 5;
+        mRoadLeftEnd = mWidth / 3 + 5;
     }
 
     @Override
@@ -37,25 +37,21 @@ public class PlayerCarView extends AbstractDrawableView implements View.OnTouchL
         mPaint.setStrokeWidth(10);
         mPaint.setColor(Color.BLACK);
         Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
-        playerCarDrawable.setBounds(left, mHeight - 200, left + 100, mHeight - 50);
+        playerCarDrawable.setBounds(mRoadLeftEnd, mHeight - 200, mRoadLeftEnd + 100, mHeight - 50);
         playerCarDrawable.draw(canvas);
-
-        Drawable enemyCarDrawable = getResources().getDrawable(R.drawable.enemy_car);
-        enemyCarDrawable.setBounds(left, 50, left + 100, 200);
-        enemyCarDrawable.draw(canvas);
     }
 
     public void updateView(boolean turnLeft) {
         if (turnLeft) {
-            left -= 10;
+            mRoadLeftEnd -= 10;
         } else {
-            left += 10;
+            mRoadLeftEnd += 10;
         }
-        if (left <= mWidth / 3) {
-            left = mWidth / 3;
+        if (mRoadLeftEnd <= mWidth / 3) {
+            mRoadLeftEnd = mWidth / 3;
         }
-        if (left + 100 >= 2 * mWidth / 3) {
-            left = 2 * mWidth / 3 - 100;
+        if (mRoadLeftEnd + 100 >= 2 * mWidth / 3) {
+            mRoadLeftEnd = 2 * mWidth / 3 - 100;
         }
         reDraw();
     }

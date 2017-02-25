@@ -8,6 +8,7 @@ public class GameContext {
     private static PlayerCarController mPlayerCarController;
     private static RoadController mRoadController;
     private static ScoreboardController mScoreboardController;
+    private static BotCarController mBotCarController;
 
     public static void registerGameController(GameController gameController) {
         mGameController = gameController;
@@ -39,6 +40,14 @@ public class GameContext {
 
     public static ScoreboardController getScoreboardController() {
         return mScoreboardController;
+    }
+
+    public static void registerEnemyCarController(BotCarController botCarController) {
+        mBotCarController = botCarController;
+    }
+
+    public static BotCarController getEnemyCarController() {
+        return mBotCarController;
     }
 }
 
