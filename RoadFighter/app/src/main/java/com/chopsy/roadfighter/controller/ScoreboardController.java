@@ -7,7 +7,7 @@ import com.chopsy.roadfighter.view.ScoreboardView;
 public class ScoreboardController {
 
     private ScoreboardView mScoreboardView;
-    private Handler mHandler;
+    private Handler mTimeHandler;
     private int mTime;
     private int mDistanceCovered;
     private int mCurrentSpeed;
@@ -15,16 +15,16 @@ public class ScoreboardController {
     public ScoreboardController(ScoreboardView scoreboardView) {
         mScoreboardView = scoreboardView;
         GameContext.registerScoreboardController(this);
-        mHandler = new Handler();
-        mHandler.postDelayed(mAction, 1000);
+        mTimeHandler = new Handler();
+        mTimeHandler.postDelayed(incrementTimeAction, 1000);
     }
 
-    Runnable mAction = new Runnable() {
+    Runnable incrementTimeAction = new Runnable() {
         @Override
         public void run() {
             mTime++;
             mScoreboardView.reDraw();
-            mHandler.postDelayed(this, 1000);
+            mTimeHandler.postDelayed(this, 1000);
         }
     };
 

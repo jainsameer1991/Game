@@ -46,7 +46,7 @@ public class CarsController implements SensorEventListener {
                 return;
             }
             boolean turnLeft = event.values[0] > 0;
-            mCarsView.updateView(turnLeft);
+            mCarsView.updatePlayerCarView(turnLeft);
         }
     }
 

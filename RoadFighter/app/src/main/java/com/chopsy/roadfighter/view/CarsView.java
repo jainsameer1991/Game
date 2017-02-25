@@ -2,8 +2,6 @@ package com.chopsy.roadfighter.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -33,7 +31,6 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
         super(context, attrs);
         mCarsController = new CarsController(this);
         setOnTouchListener(this);
-        mPaint.setStyle(Paint.Style.STROKE);
 
         mRoadLeftEnd = mWidth / 3;
         mRoadRightEnd = 2 * mWidth / 3;
@@ -59,21 +56,27 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
 
     @Override
     public void onDraw(Canvas canvas) {
-        mPaint.setStrokeWidth(10);
-        mPaint.setColor(Color.BLACK);
+
+        drawPlayerCar(canvas);
+        drawBotCar(canvas);
+    }
+
+    private void drawBotCar(Canvas canvas) {
+        Drawable botCarDrawable = getResources().getDrawable(R.drawable.bot_car);
+        botCarDrawable.setBounds(mBotCarLeftEnd, mBotCarYPos + 50, mBotCarLeftEnd + mCarWidth,
+                mBotCarYPos + 50 + mCarHeight);
+        botCarDrawable.draw(canvas);
+    }
+
+    private void drawPlayerCar(Canvas canvas) {
         Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
         playerCarDrawable.setBounds(mPlayerCarLeftEnd, mPlayerCarTopEnd,
                 mPlayerCarLeftEnd + mCarWidth,
                 mPlayerCarTopEnd + mCarHeight);
         playerCarDrawable.draw(canvas);
-
-        Drawable enemyCarDrawable = getResources().getDrawable(R.drawable.enemy_car);
-        enemyCarDrawable.setBounds(mBotCarLeftEnd, mBotCarYPos + 50, mBotCarLeftEnd + mCarWidth,
-                mBotCarYPos + 50 + mCarHeight);
-        enemyCarDrawable.draw(canvas);
     }
 
-    public void updateView(boolean turnLeft) {
+    public void updatePlayerCarView(boolean turnLeft) {
         if (turnLeft) {
             mPlayerCarLeftEnd -= mPlayerCarDriftChange;
         } else {

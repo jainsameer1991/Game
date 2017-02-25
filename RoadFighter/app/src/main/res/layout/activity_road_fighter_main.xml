@@ -40,7 +40,7 @@
         android:layout_height="fill_parent"/>
 
     <com.chopsy.roadfighter.view.CarsView
-        android:id="@+id/car"
+        android:id="@+id/cars"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 </FrameLayout>

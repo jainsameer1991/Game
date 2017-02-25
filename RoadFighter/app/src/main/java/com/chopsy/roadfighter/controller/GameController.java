@@ -11,8 +11,8 @@ import com.chopsy.roadfighter.R;
 
 public class GameController extends ActionBarActivity {
 
-    private float top1 = 0;
-    private float top2 = 0;
+    private float mBackgroundOneTop = 0;
+    private float mBackgroundTwoTop = 0;
     private ImageView backgroundOne;
     private ImageView backgroundTwo;
     private int height;
@@ -25,8 +25,8 @@ public class GameController extends ActionBarActivity {
         backgroundOne = (ImageView) findViewById(R.id.game_background1);
         backgroundTwo = (ImageView) findViewById(R.id.game_background2);
         height = backgroundOne.getHeight();
-        top1 = -1.0f * backgroundOne.getHeight();
-        top2 = 0;
+        mBackgroundOneTop = -1.0f * backgroundOne.getHeight();
+        mBackgroundTwoTop = 0;
     }
 
 
@@ -67,19 +67,19 @@ public class GameController extends ActionBarActivity {
     public void updateBackground(int speed) {
         height = backgroundOne.getHeight();
         float translateY = height * speed * 0.01f;
-        top1 += translateY;
-        top2 += translateY;
-        if (top1 > (float) height) {
-            top1 = -1.0f * backgroundOne.getHeight();
+        mBackgroundOneTop += translateY;
+        mBackgroundTwoTop += translateY;
+        if (mBackgroundOneTop > (float) height) {
+            mBackgroundOneTop = -1.0f * backgroundOne.getHeight();
         }
-        if (top2 > height) {
-            top2 = -1.0f * backgroundOne.getHeight();
+        if (mBackgroundTwoTop > height) {
+            mBackgroundTwoTop = -1.0f * backgroundOne.getHeight();
         }
-        if (top2 < 0) {
-            backgroundOne.setTranslationY(top2 + height);
+        if (mBackgroundTwoTop < 0) {
+            backgroundOne.setTranslationY(mBackgroundTwoTop + height);
         } else {
-            backgroundOne.setTranslationY(top2 - height);
+            backgroundOne.setTranslationY(mBackgroundTwoTop - height);
         }
-        backgroundTwo.setTranslationY(top2);
+        backgroundTwo.setTranslationY(mBackgroundTwoTop);
     }
 }
