@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,11 +18,8 @@ public class PlayerCarView extends View implements View.OnTouchListener {
     private int mHeight;
     private int left;
     private Paint mPaint;
-    private Handler mHandler;
     private PlayerCarController mPlayerCarController;
-    private long timeInterval = 500;
-    private int mSpeed = 0;
-    private int distance = 0;
+
     public PlayerCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPlayerCarController = new PlayerCarController(this);
@@ -45,7 +41,6 @@ public class PlayerCarView extends View implements View.OnTouchListener {
     synchronized public void onDraw(Canvas canvas) {
         mPaint.setStrokeWidth(10);
         mPaint.setColor(Color.BLACK);
-//        canvas.drawRect(left, mHeight - 110, left + 100, mHeight - 10, mPaint);
         Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
         playerCarDrawable.setBounds(left, mHeight - 200, left + 100, mHeight - 50);
         playerCarDrawable.draw(canvas);
@@ -53,9 +48,6 @@ public class PlayerCarView extends View implements View.OnTouchListener {
         Drawable enemyCarDrawable = getResources().getDrawable(R.drawable.enemy_car);
         enemyCarDrawable.setBounds(left, 50, left + 100, 200);
         enemyCarDrawable.draw(canvas);
-
-
-//        canvas.drawPicture();
     }
 
     public void updateView(boolean turnLeft) {
@@ -74,81 +66,19 @@ public class PlayerCarView extends View implements View.OnTouchListener {
     }
 
     protected void reDraw() {
-        this.invalidate();
+        invalidate();
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mHandler != null) {
-                    mHandler.removeCallbacks(decreaseSpeedAction);
-//                    mHandler = null;
-                    mHandler.postDelayed(increaseSpeedAction, timeInterval);
-                    return true;
-                }
-                mHandler = new Handler();
-                mHandler.postDelayed(increaseSpeedAction, timeInterval);
+                if (mPlayerCarController.performActionDown()) return true;
                 break;
             case MotionEvent.ACTION_UP:
-                if (mHandler == null) return true;
-                mHandler.removeCallbacks(increaseSpeedAction);
-                mHandler.postDelayed(decreaseSpeedAction, timeInterval);
-//                mHandler = null;
+                if (mPlayerCarController.performActionUp()) return true;
                 break;
         }
         return true;
     }
-
-    Runnable increaseSpeedAction = new Runnable() {
-        @Override
-        public void run() {
-
-            if (timeInterval <= 1) {
-                timeInterval = 1;
-//                mHandler.removeCallbacks(increaseSpeedAction);
-//                mHandler = null;
-            } else {
-                timeInterval -= 5;
-                mSpeed++;
-                mPlayerCarController.updateScoreboardSpeed(mSpeed);
-
-            }
-            distance += mSpeed * 5;
-            mPlayerCarController.updateBackground(mSpeed);
-            mPlayerCarController.updateScoreboardDistance(distance);
-            mHandler.postDelayed(this, timeInterval);
-            mPlayerCarController.updateRoadView();
-        }
-    };
-
-    Runnable decreaseSpeedAction = new Runnable() {
-        @Override
-        public void run() {
-
-
-            if (timeInterval >= 500) {
-                timeInterval = 500;
-                mHandler.removeCallbacks(decreaseSpeedAction);
-                mHandler.removeCallbacks(increaseSpeedAction);
-                timeInterval = 500;
-                mSpeed = 0;
-                mPlayerCarController.updateRoadView();
-                mPlayerCarController.updateScoreboardSpeed(mSpeed);
-                mHandler = null;
-            } else {
-                timeInterval += 20;
-                distance += mSpeed * 20;
-                mSpeed -= 4;
-                if (mSpeed < 1) {
-                    mSpeed = 1;
-                }
-                mPlayerCarController.updateBackground(mSpeed);
-                mPlayerCarController.updateScoreboardDistance(distance);
-                mPlayerCarController.updateRoadView();
-                mPlayerCarController.updateScoreboardSpeed(mSpeed);
-                mHandler.postDelayed(this, timeInterval);
-            }
-        }
-    };
 }

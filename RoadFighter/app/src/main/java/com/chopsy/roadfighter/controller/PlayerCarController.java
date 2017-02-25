@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 
 import com.chopsy.roadfighter.view.PlayerCarView;
 
@@ -14,6 +15,10 @@ public class PlayerCarController implements SensorEventListener {
     private SensorManager mSensorManager;
     private ScoreboardController mScoreboardController;
     private GameController mGameController;
+    private Handler mHandler;
+    private long timeInterval = 500;
+    private int mSpeed = 0;
+    private int distance = 0;
 
 
     public PlayerCarController(PlayerCarView playerCarView) {
@@ -23,7 +28,6 @@ public class PlayerCarController implements SensorEventListener {
         mSensorManager = (SensorManager) mGameController.getSystemService(Context
                 .SENSOR_SERVICE);
         mScoreboardController = GameContext.getScoreboardController();
-
     }
 
     @Override
@@ -60,7 +64,7 @@ public class PlayerCarController implements SensorEventListener {
         mScoreboardController.setSpeed(speed);
     }
 
-    public void updateBackground(int speed){
+    public void updateBackground(int speed) {
         mGameController.updateBackground(speed);
     }
 
@@ -68,4 +72,75 @@ public class PlayerCarController implements SensorEventListener {
         mScoreboardController.setDistance(distance);
         mScoreboardController.refresh();
     }
+
+    public boolean performActionUp() {
+        if (mHandler == null) return true;
+        mHandler.removeCallbacks(increaseSpeedAction);
+        mHandler.postDelayed(decreaseSpeedAction, timeInterval);
+        return false;
+    }
+
+    public boolean performActionDown() {
+        if (mHandler != null) {
+            mHandler.removeCallbacks(decreaseSpeedAction);
+//                    mHandler = null;
+            mHandler.postDelayed(increaseSpeedAction, timeInterval);
+            return true;
+        }
+        mHandler = new Handler();
+        mHandler.postDelayed(increaseSpeedAction, timeInterval);
+        return false;
+    }
+
+    Runnable increaseSpeedAction = new Runnable() {
+        @Override
+        public void run() {
+
+            if (timeInterval <= 1) {
+                timeInterval = 1;
+//                mHandler.removeCallbacks(increaseSpeedAction);
+//                mHandler = null;
+            } else {
+                timeInterval -= 5;
+                mSpeed++;
+                updateScoreboardSpeed(mSpeed);
+
+            }
+            distance += mSpeed * 5;
+            updateBackground(mSpeed);
+            updateScoreboardDistance(distance);
+            mHandler.postDelayed(this, timeInterval);
+            updateRoadView();
+        }
+    };
+
+    Runnable decreaseSpeedAction = new Runnable() {
+        @Override
+        public void run() {
+
+
+            if (timeInterval >= 500) {
+                timeInterval = 500;
+                mHandler.removeCallbacks(decreaseSpeedAction);
+                mHandler.removeCallbacks(increaseSpeedAction);
+                timeInterval = 500;
+                mSpeed = 0;
+                updateRoadView();
+                updateScoreboardSpeed(mSpeed);
+                mHandler = null;
+            } else {
+                timeInterval += 20;
+                distance += mSpeed * 20;
+                mSpeed -= 4;
+                if (mSpeed < 1) {
+                    mSpeed = 1;
+                }
+                updateBackground(mSpeed);
+                updateScoreboardDistance(distance);
+                updateRoadView();
+                updateScoreboardSpeed(mSpeed);
+                mHandler.postDelayed(this, timeInterval);
+            }
+        }
+    };
 }

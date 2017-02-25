@@ -16,7 +16,7 @@ public class RoadView extends View {
     private DashPathEffect mDashPathEffect;
     private Path mPath;
     private int mWidth;
-    boolean blackFirst = true;
+    boolean blackStripFirst = true;
 
 
     public RoadView(Context context, AttributeSet attrs) {
@@ -45,7 +45,6 @@ public class RoadView extends View {
     synchronized public void onDraw(Canvas canvas) {
 
         mPaint.setStrokeWidth(10);
-        Color roadColor = new Color();
 
         mPaint.setColor(Color.parseColor("#757575"));
         mPaint.setStyle(Paint.Style.FILL);
@@ -60,20 +59,20 @@ public class RoadView extends View {
     }
 
     protected void reDraw() {
-        this.invalidate();
+        invalidate();
     }
 
     public void updateRoadView() {
         mPath.reset();
 
-        if (blackFirst) {
+        if (blackStripFirst) {
             mPath.moveTo(mWidth / 3 + mWidth / 6, 0);
             mPath.lineTo(mWidth / 3 + mWidth / 6, getHeight());
         } else {
             mPath.moveTo(mWidth / 3 + mWidth / 6, 50);
             mPath.lineTo(mWidth / 3 + mWidth / 6, 50 + getHeight());
         }
-        blackFirst = !blackFirst;
+        blackStripFirst = !blackStripFirst;
         reDraw();
     }
 }
