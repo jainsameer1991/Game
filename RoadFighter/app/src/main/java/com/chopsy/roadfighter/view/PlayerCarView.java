@@ -12,19 +12,16 @@ import android.view.View;
 import com.chopsy.roadfighter.R;
 import com.chopsy.roadfighter.controller.PlayerCarController;
 
-public class PlayerCarView extends View implements View.OnTouchListener {
+public class PlayerCarView extends AbstractDrawableView implements View.OnTouchListener {
 
-    private int mWidth;
-    private int mHeight;
-    private int left;
-    private Paint mPaint;
-    private PlayerCarController mPlayerCarController;
+   private int left;
+   private PlayerCarController mPlayerCarController;
 
     public PlayerCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mPlayerCarController = new PlayerCarController(this);
         setOnTouchListener(this);
-        mPaint = new Paint();
+//        mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         left = mWidth / 3 + 5;
     }
@@ -32,13 +29,11 @@ public class PlayerCarView extends View implements View.OnTouchListener {
     @Override
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
         super.onSizeChanged(w, h, oldW, oldH);
-        mWidth = w;
-        mHeight = h;
         left = mWidth / 3 + 5;
     }
 
     @Override
-    synchronized public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         mPaint.setStrokeWidth(10);
         mPaint.setColor(Color.BLACK);
         Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
@@ -63,10 +58,6 @@ public class PlayerCarView extends View implements View.OnTouchListener {
             left = 2 * mWidth / 3 - 100;
         }
         reDraw();
-    }
-
-    protected void reDraw() {
-        invalidate();
     }
 
     @Override

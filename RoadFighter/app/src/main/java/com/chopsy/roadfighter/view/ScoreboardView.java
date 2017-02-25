@@ -6,33 +6,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.chopsy.roadfighter.controller.ScoreboardController;
 
-public class ScoreboardView extends View {
+public class ScoreboardView extends AbstractDrawableView {
 
-    private int mWidth;
-    private int mHeight;
-    private Paint mPaint;
     private ScoreboardController mScoreboardController;
 
     public ScoreboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScoreboardController = new ScoreboardController(this);
-        mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
-        super.onSizeChanged(w, h, oldW, oldH);
-        mWidth = w;
-        mHeight = h;
-    }
-
-    @Override
-    synchronized public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
 
         mPaint.setColor(Color.BLACK);
         mPaint.setTextSize(30);
@@ -47,10 +35,6 @@ public class ScoreboardView extends View {
                 mPaint);
         canvas.drawText("Speed: " + mScoreboardController.getCurrentSpeed(), 2 * mWidth / 3 + 15,
                 mHeight / 6 + 80, mPaint);
-    }
-
-    public void reDraw() {
-        invalidate();
     }
 }
 

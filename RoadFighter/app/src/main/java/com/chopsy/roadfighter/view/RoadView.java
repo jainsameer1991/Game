@@ -11,18 +11,15 @@ import android.view.View;
 
 import com.chopsy.roadfighter.controller.RoadController;
 
-public class RoadView extends View {
-    private Paint mPaint;
+public class RoadView extends AbstractDrawableView {
+
     private DashPathEffect mDashPathEffect;
     private Path mPath;
-    private int mWidth;
     boolean blackStripFirst = true;
-
 
     public RoadView(Context context, AttributeSet attrs) {
         super(context, attrs);
         new RoadController(this);
-        mPaint = new Paint();
         mDashPathEffect = new DashPathEffect(new float[]{50, 50}, 0);
         mPath = new Path();
         mPath.reset();
@@ -33,7 +30,6 @@ public class RoadView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldW, int oldH) {
         super.onSizeChanged(w, h, oldW, oldH);
-        mWidth = w;
         mPath = new Path();
         mPath.reset();
         mPath.moveTo(mWidth / 3 + mWidth / 6, 0);
@@ -56,10 +52,6 @@ public class RoadView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setPathEffect(mDashPathEffect);
         canvas.drawPath(mPath, mPaint);
-    }
-
-    protected void reDraw() {
-        invalidate();
     }
 
     public void updateRoadView() {
