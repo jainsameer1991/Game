@@ -21,7 +21,6 @@ public class PlayerCarView extends AbstractDrawableView implements View.OnTouchL
         super(context, attrs);
         mPlayerCarController = new PlayerCarController(this);
         setOnTouchListener(this);
-//        mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         mRoadLeftEnd = mWidth / 3 + 5;
     }

@@ -19,7 +19,6 @@ public class PlayerCarController implements SensorEventListener {
     private long timeInterval = 500;
     private int mSpeed = 0;
     private int distance = 0;
-    private static final int maxSpeed = 100;
 
     private BotCarController mBotCarController;
 
@@ -106,12 +105,12 @@ public class PlayerCarController implements SensorEventListener {
             } else {
                 timeInterval -= 5;
                 mSpeed++;
-                updateBotCarSpeed((int)(mSpeed/5*10));
+                updateBotCarSpeed(mSpeed / 5 * 10);
                 updateScoreboardSpeed(mSpeed);
 
             }
             distance += mSpeed * 5;
-            updateBotCarSpeed((int)(mSpeed/5*10));
+            updateBotCarSpeed(mSpeed / 5 * 10);
             updateBackground(mSpeed);
             updateScoreboardDistance(distance);
             mHandler.postDelayed(this, timeInterval);
@@ -132,7 +131,7 @@ public class PlayerCarController implements SensorEventListener {
                 mSpeed = 0;
                 updateRoadView();
                 updateScoreboardSpeed(mSpeed);
-                updateBotCarSpeed((int)(mSpeed/500*10));
+                updateBotCarSpeed(mSpeed / 500 * 10);
                 mHandler = null;
             } else {
                 timeInterval += 20;
@@ -141,7 +140,7 @@ public class PlayerCarController implements SensorEventListener {
                 if (mSpeed < 1) {
                     mSpeed = 1;
                 }
-                updateBotCarSpeed((int)(mSpeed/5*10));
+                updateBotCarSpeed(mSpeed / 5 * 10);
                 updateBackground(mSpeed);
                 updateScoreboardDistance(distance);
                 updateRoadView();

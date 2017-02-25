@@ -10,13 +10,12 @@ import com.chopsy.roadfighter.controller.BotCarController;
 
 public class BotCarView extends AbstractDrawableView {
 
-    private BotCarController mBotCarController;
     private int mRoadLeftEnd;
     private int mCarYPos;
 
     public BotCarView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mBotCarController = new BotCarController(this);
+        new BotCarController(this);
         mRoadLeftEnd = mWidth / 3 + 5;
     }
 

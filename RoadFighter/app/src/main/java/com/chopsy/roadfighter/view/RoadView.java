@@ -7,7 +7,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.chopsy.roadfighter.controller.RoadController;
 
@@ -45,8 +44,6 @@ public class RoadView extends AbstractDrawableView {
         mPaint.setColor(Color.parseColor("#757575"));
         mPaint.setStyle(Paint.Style.FILL);
 
-//        canvas.drawLine(getWidth() / 3, 0, getWidth() / 3, getHeight(), mPaint);
-//        canvas.drawLine(2 * getWidth() / 3, 0, 2 * getWidth() / 3, getHeight(), mPaint);
         canvas.drawRect(getWidth() / 3, 0, 2 * getWidth() / 3, getHeight(), mPaint);
         mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.STROKE);
