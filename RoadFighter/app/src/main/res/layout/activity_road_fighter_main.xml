@@ -1,16 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".RoadFighterMain">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             tools:context=".RoadFighterMain">
 
     <ImageView
-        android:id="@+id/roadView"
+        android:id="@+id/game_background1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_road"
+        android:src="@drawable/game_background"
         />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/game_background2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/game_background"
+        />
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/button_start_race"-->
+    <!--android:src="@drawable/start_race"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+
+    <!--android:layout_height="wrap_content"/>-->
+    <com.chopsy.roadfighter.view.RoadView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <com.chopsy.roadfighter.view.ScoreboardView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <com.chopsy.roadfighter.view.CarsView
+        android:id="@+id/cars"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+</FrameLayout>
