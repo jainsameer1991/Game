@@ -2,15 +2,14 @@ package com.chopsy.roadfighter.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.chopsy.roadfighter.R;
 import com.chopsy.roadfighter.controller.CarsController;
 
-public class CarsView extends AbstractDrawableView implements View.OnTouchListener {
+public class CarsView extends AbstractDrawableView {
 
     private int mBotCarLeftEnd;
     private int mPlayerCarLeftEnd;
@@ -18,9 +17,7 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
     private int mRoadLeftEnd;
     private int mRoadRightEnd;
 
-    private int mBotCarYPos;
-
-    private CarsController mCarsController;
+    private int mBotCarTopEnd;
 
     private static final int mCarWidth = 100;
     private static final int mCarHeight = 150;
@@ -29,8 +26,7 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
 
     public CarsView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mCarsController = new CarsController(this);
-        setOnTouchListener(this);
+        new CarsController(this);
 
         mRoadLeftEnd = mWidth / 3;
         mRoadRightEnd = 2 * mWidth / 3;
@@ -63,8 +59,8 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
 
     private void drawBotCar(Canvas canvas) {
         Drawable botCarDrawable = getResources().getDrawable(R.drawable.bot_car);
-        botCarDrawable.setBounds(mBotCarLeftEnd, mBotCarYPos + 50, mBotCarLeftEnd + mCarWidth,
-                mBotCarYPos + 50 + mCarHeight);
+        botCarDrawable.setBounds(mBotCarLeftEnd, mBotCarTopEnd, mBotCarLeftEnd + mCarWidth,
+                mBotCarTopEnd + mCarHeight);
         botCarDrawable.draw(canvas);
     }
 
@@ -88,27 +84,23 @@ public class CarsView extends AbstractDrawableView implements View.OnTouchListen
         if (mPlayerCarLeftEnd + mCarWidth >= mRoadRightEnd) {
             mPlayerCarLeftEnd = mRoadRightEnd - mCarWidth;
         }
-        reDraw();
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (mCarsController.performActionDown()) return true;
-                break;
-            case MotionEvent.ACTION_UP:
-                if (mCarsController.performActionUp()) return true;
-                break;
-        }
-        return true;
+    public void setBotCarTopEnd(int botCarTopEnd) {
+        mBotCarTopEnd = botCarTopEnd;
     }
 
-    public void setBotCarYPos(int botCarYPos) {
-        mBotCarYPos = botCarYPos;
+    public int getBotCarTopEnd() {
+        return mBotCarTopEnd;
     }
 
-    public int getBotCarYPos() {
-        return mBotCarYPos;
+    public Rect getPlayerCarBounds() {
+        return new Rect(mPlayerCarLeftEnd, mPlayerCarTopEnd, mPlayerCarLeftEnd + mCarWidth,
+                mPlayerCarTopEnd + mCarHeight);
+    }
+
+    public Rect getBotCarBounds() {
+        return new Rect(mBotCarLeftEnd, mBotCarTopEnd, mBotCarLeftEnd + mCarWidth,
+                mBotCarTopEnd + mCarHeight);
     }
 }
