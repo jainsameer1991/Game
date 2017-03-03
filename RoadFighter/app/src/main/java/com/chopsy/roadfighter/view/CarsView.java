@@ -12,16 +12,20 @@ import com.chopsy.roadfighter.controller.CarsController;
 public class CarsView extends AbstractDrawableView {
 
     private int mBotCarLeftEnd;
+    private int mBotCarTopEnd;
+
     private int mPlayerCarLeftEnd;
     private int mPlayerCarTopEnd;
+
     private int mRoadLeftEnd;
     private int mRoadRightEnd;
 
-    private int mBotCarTopEnd;
-
     private static final int mCarWidth = 100;
     private static final int mCarHeight = 150;
+
     private static final int mPlayerCarDriftChange = 10;
+
+    public static boolean isPlayerCarVisible = true;
 
 
     public CarsView(Context context, AttributeSet attrs) {
@@ -35,6 +39,7 @@ public class CarsView extends AbstractDrawableView {
 
         mPlayerCarLeftEnd = mRoadLeftEnd + 5;
         mPlayerCarTopEnd = mHeight - 200;
+        mBotCarTopEnd = -mCarHeight;
     }
 
     @Override
@@ -45,6 +50,7 @@ public class CarsView extends AbstractDrawableView {
         mRoadRightEnd = 2 * mWidth / 3;
 
         mBotCarLeftEnd = mRoadLeftEnd + 5;
+        mBotCarTopEnd = -mCarHeight;
 
         mPlayerCarLeftEnd = mRoadLeftEnd + 5;
         mPlayerCarTopEnd = mHeight - 200;
@@ -65,11 +71,14 @@ public class CarsView extends AbstractDrawableView {
     }
 
     private void drawPlayerCar(Canvas canvas) {
-        Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
-        playerCarDrawable.setBounds(mPlayerCarLeftEnd, mPlayerCarTopEnd,
-                mPlayerCarLeftEnd + mCarWidth,
-                mPlayerCarTopEnd + mCarHeight);
-        playerCarDrawable.draw(canvas);
+
+        if(isPlayerCarVisible){
+            Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
+            playerCarDrawable.setBounds(mPlayerCarLeftEnd, mPlayerCarTopEnd,
+                    mPlayerCarLeftEnd + mCarWidth,
+                    mPlayerCarTopEnd + mCarHeight);
+            playerCarDrawable.draw(canvas);
+        }
     }
 
     public void updatePlayerCarView(boolean turnLeft) {
@@ -102,5 +111,9 @@ public class CarsView extends AbstractDrawableView {
     public Rect getBotCarBounds() {
         return new Rect(mBotCarLeftEnd, mBotCarTopEnd, mBotCarLeftEnd + mCarWidth,
                 mBotCarTopEnd + mCarHeight);
+    }
+
+    public static int getCarHeight() {
+        return mCarHeight;
     }
 }

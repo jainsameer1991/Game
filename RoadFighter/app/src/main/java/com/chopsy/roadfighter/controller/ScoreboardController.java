@@ -19,7 +19,7 @@ public class ScoreboardController {
         mTimeHandler.postDelayed(incrementTimeAction, 1000);
     }
 
-    Runnable incrementTimeAction = new Runnable() {
+    private Runnable incrementTimeAction = new Runnable() {
         @Override
         public void run() {
             mTime++;

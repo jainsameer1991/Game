@@ -14,7 +14,7 @@ public class RoadView extends AbstractDrawableView {
 
     private DashPathEffect mDashPathEffect;
     private Path mPath;
-    boolean blackStripFirst = true;
+    private boolean blackStripFirst = true;
 
     public RoadView(Context context, AttributeSet attrs) {
         super(context, attrs);
