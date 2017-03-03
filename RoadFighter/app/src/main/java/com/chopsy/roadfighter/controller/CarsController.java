@@ -266,13 +266,11 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (currentRaceStatus == RaceStatus.PLAYING) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    performActionDown();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    performActionUp();
-                    break;
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                performActionDown();
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                performActionUp();
             }
             return true;
         }
