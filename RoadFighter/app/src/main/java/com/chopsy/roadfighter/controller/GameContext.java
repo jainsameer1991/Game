@@ -1,5 +1,7 @@
 package com.chopsy.roadfighter.controller;
 
+import com.chopsy.roadfighter.model.RaceStatus;
+
 /**
  * This class helps in communication between individual controllers.
  */
@@ -8,6 +10,7 @@ public class GameContext {
     private static CarsController mCarsController;
     private static RoadController mRoadController;
     private static ScoreboardController mScoreboardController;
+    private static RaceStatus mCurrentRaceStatus = RaceStatus.NOT_START;
 
     public static void registerGameController(GameController gameController) {
         mGameController = gameController;
@@ -40,5 +43,6 @@ public class GameContext {
     public static ScoreboardController getScoreboardController() {
         return mScoreboardController;
     }
+
 }
 

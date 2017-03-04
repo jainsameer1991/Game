@@ -6,6 +6,7 @@
              tools:context=".RoadFighterMain">
 
     <ImageView
+        android:contentDescription="@string/background_image_desc"
         android:id="@+id/game_background1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -14,6 +15,7 @@
         />
 
     <ImageView
+        android:contentDescription="@string/background_image_desc"
         android:id="@+id/game_background2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -41,6 +43,10 @@
 
     <com.chopsy.roadfighter.view.CarsView
         android:id="@+id/cars"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <com.chopsy.roadfighter.view.CountdownView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 </FrameLayout>
