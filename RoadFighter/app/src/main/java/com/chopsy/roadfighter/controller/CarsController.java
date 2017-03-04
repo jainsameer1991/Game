@@ -37,11 +37,21 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     public CarsController(CarsView carsView) {
         mCarsView = carsView;
         GameContext.registerPlayerCarController(this);
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            mSensorManager = (SensorManager) mGameController.getSystemService(Context
+                    .SENSOR_SERVICE);
+        }
+    }
+
+    public void startController() {
         mGameController = GameContext.getGameController();
         mScoreboardController = GameContext.getScoreboardController();
         mCollisionDetector = new CollisionDetector();
-        mSensorManager = (SensorManager) mGameController.getSystemService(Context
-                .SENSOR_SERVICE);
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            mSensorManager = (SensorManager) mGameController.getSystemService(Context
+                    .SENSOR_SERVICE);
+        }
+        startSensorManager();
         mCarsView.setOnTouchListener(this);
 
         mBotCurrentSpeed = minSpeed;
@@ -54,20 +64,20 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
             }
         };
         mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1000);
-
-
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            if (Math.abs(event.values[0]) < 1) {
-                return;
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                if (Math.abs(event.values[0]) < 1) {
+                    return;
+                }
+                boolean turnLeft = event.values[0] > 0;
+                mCarsView.updatePlayerCarView(turnLeft);
+                mCarsView.reDraw();
+                detectCollision();
             }
-            boolean turnLeft = event.values[0] > 0;
-            mCarsView.updatePlayerCarView(turnLeft);
-            mCarsView.reDraw();
-            detectCollision();
         }
     }
 
@@ -77,8 +87,11 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     }
 
     public void startSensorManager() {
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
-                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
+                    .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        }
+
     }
 
     public void stopSensorManager() {

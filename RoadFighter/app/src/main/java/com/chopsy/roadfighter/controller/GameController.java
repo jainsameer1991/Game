@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.chopsy.roadfighter.R;
+import com.chopsy.roadfighter.model.RaceStatus;
 
 
 public class GameController extends ActionBarActivity {
@@ -22,6 +23,9 @@ public class GameController extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         GameContext.registerGameController(this);
         setContentView(R.layout.activity_road_fighter_main);
+    }
+
+    public void startController() {
         backgroundOne = (ImageView) findViewById(R.id.game_background1);
         backgroundTwo = (ImageView) findViewById(R.id.game_background2);
         height = backgroundOne.getHeight();
@@ -55,12 +59,16 @@ public class GameController extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        GameContext.getPlayerCarController().startSensorManager();
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            GameContext.getPlayerCarController().startSensorManager();
+        }
     }
 
     @Override
     protected void onStop() {
-        GameContext.getPlayerCarController().stopSensorManager();
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            GameContext.getPlayerCarController().stopSensorManager();
+        }
         super.onStop();
     }
 

@@ -15,6 +15,9 @@ public class ScoreboardController {
     public ScoreboardController(ScoreboardView scoreboardView) {
         mScoreboardView = scoreboardView;
         GameContext.registerScoreboardController(this);
+    }
+
+    public void startController() {
         mTimeHandler = new Handler();
         mTimeHandler.postDelayed(incrementTimeAction, 1000);
     }

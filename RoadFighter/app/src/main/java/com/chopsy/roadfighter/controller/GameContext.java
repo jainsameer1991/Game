@@ -10,6 +10,7 @@ public class GameContext {
     private static CarsController mCarsController;
     private static RoadController mRoadController;
     private static ScoreboardController mScoreboardController;
+    private static RaceStatus mOldRaceStatus = RaceStatus.NOT_START;
     private static RaceStatus mCurrentRaceStatus = RaceStatus.NOT_START;
 
     public static void registerGameController(GameController gameController) {
@@ -44,5 +45,24 @@ public class GameContext {
         return mScoreboardController;
     }
 
+    public static RaceStatus getCurrentRaceStatus() {
+        return mCurrentRaceStatus;
+    }
+
+    public static void setCurrentRaceStatus(RaceStatus currentRaceStatus) {
+        mOldRaceStatus = mCurrentRaceStatus;
+        mCurrentRaceStatus = currentRaceStatus;
+        if (mOldRaceStatus != mCurrentRaceStatus) {
+            doTransition();
+        }
+    }
+
+    private static void doTransition() {
+        if (mOldRaceStatus == RaceStatus.NOT_START && mCurrentRaceStatus == RaceStatus.PLAYING) {
+            mGameController.startController();
+            mScoreboardController.startController();
+            mCarsController.startController();
+        }
+    }
 }
 
