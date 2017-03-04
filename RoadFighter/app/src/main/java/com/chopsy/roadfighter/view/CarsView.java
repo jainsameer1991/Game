@@ -72,7 +72,7 @@ public class CarsView extends AbstractDrawableView {
 
     private void drawPlayerCar(Canvas canvas) {
 
-        if(isPlayerCarVisible){
+        if (isPlayerCarVisible) {
             Drawable playerCarDrawable = getResources().getDrawable(R.drawable.player_car);
             playerCarDrawable.setBounds(mPlayerCarLeftEnd, mPlayerCarTopEnd,
                     mPlayerCarLeftEnd + mCarWidth,
@@ -115,5 +115,21 @@ public class CarsView extends AbstractDrawableView {
 
     public static int getCarHeight() {
         return mCarHeight;
+    }
+
+    public int getRoadLeftEnd() {
+        return mRoadLeftEnd;
+    }
+
+    public int getRoadRightEnd() {
+        return mRoadRightEnd;
+    }
+
+    public static int getCarWidth() {
+        return mCarWidth;
+    }
+
+    public void setBotCarLeftEnd(int botCarLeftEnd) {
+        mBotCarLeftEnd = botCarLeftEnd;
     }
 }

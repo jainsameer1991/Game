@@ -120,7 +120,6 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         }
         mPlayerCarSpeedHandler = new Handler();
         mPlayerCarSpeedHandler.postDelayed(increasePlayerCarSpeedAction, timeInterval);
-//        return;
     }
 
     private Runnable increasePlayerCarSpeedAction = new Runnable() {
@@ -210,10 +209,20 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         carPos += distanceCovered;
         if (carPos > mCarsView.getHeight()) {
             carPos = 0;
+            changeBotCarLeftEndPosition();
         }
         mCarsView.setBotCarTopEnd(carPos);
         mCarsView.reDraw();
         detectCollision();
+    }
+
+    private void changeBotCarLeftEndPosition() {
+        int roadLeftEnd = mCarsView.getRoadLeftEnd();
+        int roadRightEnd = mCarsView.getRoadRightEnd();
+        int carWidth = CarsView.getCarWidth();
+        int botCarNewLeftPosition = (int) (Math.random() * (roadRightEnd - roadLeftEnd -
+                carWidth) + roadLeftEnd);
+        mCarsView.setBotCarLeftEnd(botCarNewLeftPosition);
     }
 
     private void detectCollision() {
