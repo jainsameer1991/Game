@@ -31,9 +31,6 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     private int mBotCurrentSpeed = 2;
     private final static int minSpeed = 2;
 
-    private RaceStatus currentRaceStatus = RaceStatus.PLAYING;
-
-
     public CarsController(CarsView carsView) {
         mCarsView = carsView;
         GameContext.registerPlayerCarController(this);
@@ -43,7 +40,7 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         }
     }
 
-    public void startController() {
+    public void start() {
         mGameController = GameContext.getGameController();
         mScoreboardController = GameContext.getScoreboardController();
         mCollisionDetector = new CollisionDetector();
@@ -56,15 +53,16 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
 
         mBotCurrentSpeed = minSpeed;
         mBotCarSpeedHandler = new Handler();
-        Runnable botCarSpeedControlAction = new Runnable() {
-            @Override
-            public void run() {
-                updateBotCarPosition();
-                mBotCarSpeedHandler.postDelayed(this, 10);
-            }
-        };
         mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1000);
     }
+
+    private Runnable botCarSpeedControlAction = new Runnable() {
+        @Override
+        public void run() {
+            updateBotCarPosition();
+            mBotCarSpeedHandler.postDelayed(this, 10);
+        }
+    };
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -122,7 +120,6 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         if (mPlayerCarSpeedHandler == null) return;
         mPlayerCarSpeedHandler.removeCallbacks(increasePlayerCarSpeedAction);
         mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
-//        return false;
     }
 
     public void performActionDown() {
@@ -139,7 +136,7 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         @Override
         public void run() {
 
-            if (currentRaceStatus == RaceStatus.PLAYING) {
+            if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
                 if (timeInterval <= 1) {
                     timeInterval = 1;
                 } else {
@@ -164,7 +161,7 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         @Override
         public void run() {
 
-            if (currentRaceStatus == RaceStatus.PLAYING) {
+            if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
                 if (timeInterval >= 500) {
                     timeInterval = 500;
                     mPlayerCarSpeedHandler.removeCallbacks(decreasePlayerCarSpeedAction);
@@ -249,11 +246,11 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         resetEverythingExceptPlayerCar();
         stopListenersAndSensors();
         refreshPlayerCar();
-        resumeGame();
+        resumeGameAfterRefresh();
     }
 
-    private void resumeGame() {
-        currentRaceStatus = RaceStatus.PLAYING;
+    private void resumeGameAfterRefresh() {
+        GameContext.setCurrentRaceStatus(RaceStatus.PLAYING);
         mBotCurrentSpeed = minSpeed;
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
                 .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
@@ -278,7 +275,7 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     }
 
     private void resetEverythingExceptPlayerCar() {
-        currentRaceStatus = RaceStatus.PAUSE;
+        GameContext.setCurrentRaceStatus(RaceStatus.PAUSE);
         mCarsView.setBotCarTopEnd(-1 * CarsView.getCarHeight());
         stopBotCar();
         updateScoreboardSpeed(0);
@@ -287,7 +284,7 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (currentRaceStatus == RaceStatus.PLAYING) {
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 performActionDown();
             }
@@ -303,5 +300,22 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
         Rect playerCarBounds = mCarsView.getPlayerCarBounds();
         Rect botCarBounds = mCarsView.getBotCarBounds();
         return mCollisionDetector.areIntersected(playerCarBounds, botCarBounds);
+    }
+
+    public void pause() {
+        if (mBotCarSpeedHandler != null) {
+            mBotCarSpeedHandler.removeCallbacks(botCarSpeedControlAction);
+        }
+        if (mPlayerCarSpeedHandler != null) {
+            mPlayerCarSpeedHandler.removeCallbacks(increasePlayerCarSpeedAction);
+            mPlayerCarSpeedHandler.removeCallbacks(decreasePlayerCarSpeedAction);
+        }
+        stopListenersAndSensors();
+    }
+
+    public void resume() {
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
+                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+
     }
 }

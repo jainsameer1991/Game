@@ -59,10 +59,22 @@ public class GameContext {
 
     private static void doTransition() {
         if (mOldRaceStatus == RaceStatus.NOT_START && mCurrentRaceStatus == RaceStatus.PLAYING) {
-            mGameController.startController();
-            mScoreboardController.startController();
-            mCarsController.startController();
+            mGameController.start();
+            mScoreboardController.start();
+            mCarsController.start();
+        }
+        if(mOldRaceStatus == RaceStatus.PLAYING && mCurrentRaceStatus == RaceStatus.PAUSE){
+            mCarsController.pause();
+            mScoreboardController.pause();
+        }
+        if(mOldRaceStatus == RaceStatus.PAUSE && mCurrentRaceStatus == RaceStatus.PLAYING){
+            mCarsController.resume();
+            mScoreboardController.resume();
         }
     }
+
+//    public static RaceStatus getRaceOldStatus() {
+//        return mOldRaceStatus;
+//    }
 }
 

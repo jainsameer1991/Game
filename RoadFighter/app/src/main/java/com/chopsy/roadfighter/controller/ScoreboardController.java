@@ -17,7 +17,7 @@ public class ScoreboardController {
         GameContext.registerScoreboardController(this);
     }
 
-    public void startController() {
+    public void start() {
         mTimeHandler = new Handler();
         mTimeHandler.postDelayed(incrementTimeAction, 1000);
     }
@@ -53,5 +53,13 @@ public class ScoreboardController {
 
     public void setDistance(int distance) {
         mDistanceCovered = distance;
+    }
+
+    public void pause() {
+        mTimeHandler.removeCallbacks(incrementTimeAction);
+    }
+
+    public void resume() {
+        start();
     }
 }

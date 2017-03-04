@@ -25,7 +25,7 @@ public class GameController extends ActionBarActivity {
         setContentView(R.layout.activity_road_fighter_main);
     }
 
-    public void startController() {
+    public void start() {
         backgroundOne = (ImageView) findViewById(R.id.game_background1);
         backgroundTwo = (ImageView) findViewById(R.id.game_background2);
         height = backgroundOne.getHeight();
@@ -90,4 +90,31 @@ public class GameController extends ActionBarActivity {
         }
         backgroundTwo.setTranslationY(mBackgroundTwoTop);
     }
+
+//    @Override
+//    public void onBackPressed() {
+////        willHaveToMakeActivity();
+//    }
+//
+//    private void willHaveToMakeActivity() {
+//        GameContext.setCurrentRaceStatus(RaceStatus.PAUSE);
+//        AlertDialog exitDialog = new AlertDialog.Builder(this)
+//                .setIcon(android.R.drawable.ic_dialog_alert)
+//                .setTitle("Exit Road Fighter?")
+//                .setMessage("Are you sure you want to exit Road Fighter")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        GameContext.setCurrentRaceStatus(RaceStatus.FINISH);
+//                        finish();
+//                    }
+//
+//                })
+//                .setNegativeButton("No", null)
+//                .create();
+//        exitDialog.show();
+////        while(exitDialog.isShowing());
+////        exitDialog.show();
+//        GameContext.setCurrentRaceStatus(GameContext.getRaceOldStatus());
+//    }
 }
