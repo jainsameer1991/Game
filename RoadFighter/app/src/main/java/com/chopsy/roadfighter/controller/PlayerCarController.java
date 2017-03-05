@@ -14,6 +14,7 @@ public class PlayerCarController implements View.OnTouchListener {
     private Handler mPlayerCarSpeedHandler;
     private long timeInterval = 500;
     private int mPlayerCarSpeed;
+    private int mDistanceCovered;
 
     public PlayerCarController(CarsController carsController, CarsView playerCarView) {
         mCarsController = carsController;
@@ -66,7 +67,8 @@ public class PlayerCarController implements View.OnTouchListener {
 
                 mCarsController.updateBotCarSpeed(mPlayerCarSpeed / 5 * 10);
                 mCarsController.updateBackground(mPlayerCarSpeed);
-                mCarsController.updateScoreboard(mPlayerCarSpeed);
+                mDistanceCovered += mPlayerCarSpeed * 5;
+                mCarsController.updateScoreboardDistance();
                 mPlayerCarSpeedHandler.postDelayed(this, timeInterval);
                 mCarsController.updateRoadView();
             }
@@ -91,7 +93,7 @@ public class PlayerCarController implements View.OnTouchListener {
                     mPlayerCarSpeedHandler = null;
                 } else {
                     timeInterval += 20;
-                    mCarsController.updateDistanceCovered(mPlayerCarSpeed);
+                    mDistanceCovered += mPlayerCarSpeed * 20;
                     mPlayerCarSpeed -= 4;
                     if (mPlayerCarSpeed < 1) {
                         mPlayerCarSpeed = 1;
@@ -123,5 +125,9 @@ public class PlayerCarController implements View.OnTouchListener {
             mPlayerCarSpeedHandler = new Handler();
         }
         mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
+    }
+
+    public int getDistanceCovered() {
+        return mDistanceCovered;
     }
 }

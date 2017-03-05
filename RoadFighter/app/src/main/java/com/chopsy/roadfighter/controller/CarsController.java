@@ -23,7 +23,6 @@ public class CarsController implements SensorEventListener {
     private CollisionDetector mCollisionDetector;
     private Handler mPlayerCarSpeedHandler;
     private Handler mBotCarSpeedHandler;
-    private int distance = 0;
     private int mRefreshCount = 0;
 
     private int mBotCurrentSpeed = 2;
@@ -110,7 +109,7 @@ public class CarsController implements SensorEventListener {
     }
 
     public void updateScoreboardDistance() {
-        mScoreboardController.setDistance(distance);
+        mScoreboardController.setDistance(mPlayerCarController.getDistanceCovered());
         mScoreboardController.refresh();
     }
 
@@ -232,14 +231,5 @@ public class CarsController implements SensorEventListener {
             mPlayerCarSpeedHandler = new Handler();
         }
         mPlayerCarController.resume();
-    }
-
-    protected void updateScoreboard(int playerCarSpeed) {
-        distance += playerCarSpeed * 5;
-        updateScoreboardDistance();
-    }
-
-    protected void updateDistanceCovered(int playerCarSpeed) {
-        distance += playerCarSpeed * 20;
     }
 }
