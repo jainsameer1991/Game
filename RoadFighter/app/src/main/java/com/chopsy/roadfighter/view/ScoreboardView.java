@@ -16,7 +16,7 @@ public class ScoreboardView extends AbstractDrawableView {
     public ScoreboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScoreboardController = new ScoreboardController(this);
-        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -27,6 +27,7 @@ public class ScoreboardView extends AbstractDrawableView {
         canvas.drawRect(2 * mWidth / 3 + 10, mHeight / 6 - 30, mWidth - 10, mHeight / 6 + 90,
                 mPaint);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        mPaint.setColor(Color.WHITE);
         canvas.drawText("Time: " + mScoreboardController.getTime(), 2 * mWidth / 3 + 15,
                 mHeight / 6,
                 mPaint);
