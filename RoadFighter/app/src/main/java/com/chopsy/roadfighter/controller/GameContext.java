@@ -52,7 +52,7 @@ public class GameContext {
     public static void setCurrentRaceStatus(RaceStatus currentRaceStatus) {
         mOldRaceStatus = mCurrentRaceStatus;
         mCurrentRaceStatus = currentRaceStatus;
-        if (mOldRaceStatus != mCurrentRaceStatus) {
+        if (!mOldRaceStatus.equals(mCurrentRaceStatus)) {
             doTransition();
         }
     }
@@ -63,11 +63,11 @@ public class GameContext {
             mScoreboardController.start();
             mCarsController.start();
         }
-        if(mOldRaceStatus == RaceStatus.PLAYING && mCurrentRaceStatus == RaceStatus.PAUSE){
+        if (mOldRaceStatus == RaceStatus.PLAYING && mCurrentRaceStatus == RaceStatus.PAUSE) {
             mCarsController.pause();
             mScoreboardController.pause();
         }
-        if(mOldRaceStatus == RaceStatus.PAUSE && mCurrentRaceStatus == RaceStatus.PLAYING){
+        if (mOldRaceStatus == RaceStatus.PAUSE && mCurrentRaceStatus == RaceStatus.PLAYING) {
             mCarsController.resume();
             mScoreboardController.resume();
         }

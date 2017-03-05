@@ -66,16 +66,15 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                if (Math.abs(event.values[0]) < 1) {
-                    return;
-                }
-                boolean turnLeft = event.values[0] > 0;
-                mCarsView.updatePlayerCarView(turnLeft);
-                mCarsView.reDraw();
-                detectCollision();
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING && event.sensor.getType() ==
+                Sensor.TYPE_ACCELEROMETER) {
+            if (Math.abs(event.values[0]) < 1) {
+                return;
             }
+            boolean turnLeft = event.values[0] > 0;
+            mCarsView.updatePlayerCarView(turnLeft);
+            mCarsView.reDraw();
+            detectCollision();
         }
     }
 
