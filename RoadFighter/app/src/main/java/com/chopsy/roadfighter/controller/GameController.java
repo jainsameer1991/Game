@@ -62,14 +62,14 @@ public class GameController extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
         if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            GameContext.getPlayerCarController().startSensorManager();
+            GameContext.getCarsController().startSensorManager();
         }
     }
 
     @Override
     protected void onStop() {
         if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            GameContext.getPlayerCarController().stopSensorManager();
+            GameContext.getCarsController().stopSensorManager();
         }
         super.onStop();
     }

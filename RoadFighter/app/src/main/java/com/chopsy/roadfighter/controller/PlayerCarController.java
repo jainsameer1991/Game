@@ -1,5 +1,10 @@
 package com.chopsy.roadfighter.controller;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -8,19 +13,21 @@ import com.chopsy.roadfighter.model.PlayerCar;
 import com.chopsy.roadfighter.model.RaceStatus;
 import com.chopsy.roadfighter.view.CarsView;
 
-public class PlayerCarController implements View.OnTouchListener {
+public class PlayerCarController implements SensorEventListener, View.OnTouchListener {
 
     private CarsController mCarsController;
     private CarsView mPlayerCarView;
     private PlayerCar mPlayerCar;
     private Handler mPlayerCarSpeedHandler;
     private long timeInterval = 500;
+    private SensorManager mSensorManager;
 
 
     public PlayerCarController(CarsController carsController, CarsView playerCarView) {
         mCarsController = carsController;
         mPlayerCarView = playerCarView;
         mPlayerCar = new PlayerCar();
+        initSensorManager();
     }
 
     @Override
@@ -129,9 +136,71 @@ public class PlayerCarController implements View.OnTouchListener {
             mPlayerCarSpeedHandler = new Handler();
         }
         mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
+        if (mSensorManager == null) {
+            mSensorManager = (SensorManager) GameContext.getGameController().getSystemService
+                    (Context
+                            .SENSOR_SERVICE);
+        }
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
+                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        if (mPlayerCarSpeedHandler == null) {
+            mPlayerCarSpeedHandler = new Handler();
+        }
+        mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
     }
 
     public int getDistanceCovered() {
         return mPlayerCar.getDistanceCovered();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING && event.sensor.getType() ==
+                Sensor.TYPE_ACCELEROMETER) {
+            if (Math.abs(event.values[0]) < 1) {
+                return;
+            }
+            boolean turnLeft = event.values[0] > 0;
+            mPlayerCarView.updatePlayerCarView(turnLeft);
+            mPlayerCarView.reDraw();
+            mCarsController.detectCollision();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    public void startSensorManager() {
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
+                    .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        }
+    }
+
+    public void stopSensorManager() {
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this);
+        }
+    }
+
+    public void registerSensorManagerListener() {
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
+                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    public void stopListenersAndSensors() {
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this);
+        }
+    }
+
+    public void initSensorManager() {
+        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
+            mSensorManager = (SensorManager) GameContext.getGameController().getSystemService
+                    (Context
+                            .SENSOR_SERVICE);
+        }
     }
 }

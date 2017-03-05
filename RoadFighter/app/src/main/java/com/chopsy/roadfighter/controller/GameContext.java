@@ -19,7 +19,7 @@ public class GameContext {
         mGameController = gameController;
     }
 
-    public static void registerPlayerCarController(CarsController carsController) {
+    public static void registerCarsController(CarsController carsController) {
         mCarsController = carsController;
     }
 
@@ -27,7 +27,7 @@ public class GameContext {
         return mGameController;
     }
 
-    public static CarsController getPlayerCarController() {
+    public static CarsController getCarsController() {
         return mCarsController;
     }
 

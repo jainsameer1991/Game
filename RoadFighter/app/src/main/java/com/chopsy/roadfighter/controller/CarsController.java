@@ -1,27 +1,21 @@
 package com.chopsy.roadfighter.controller;
 
-import android.content.Context;
 import android.graphics.Rect;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Handler;
 
 import com.chopsy.roadfighter.model.RaceStatus;
 import com.chopsy.roadfighter.view.CarsView;
 
-public class CarsController implements SensorEventListener {
+public class CarsController {
 
     private CarsView mCarsView;
-    private SensorManager mSensorManager;
+
 
     private ScoreboardController mScoreboardController;
     private GameController mGameController;
     private PlayerCarController mPlayerCarController;
 
     private CollisionDetector mCollisionDetector;
-    private Handler mPlayerCarSpeedHandler;
     private Handler mBotCarSpeedHandler;
     private int mRefreshCount = 0;
 
@@ -30,23 +24,18 @@ public class CarsController implements SensorEventListener {
 
     public CarsController(CarsView carsView) {
         mCarsView = carsView;
-        GameContext.registerPlayerCarController(this);
-        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            mSensorManager = (SensorManager) mGameController.getSystemService(Context
-                    .SENSOR_SERVICE);
-        }
+        GameContext.registerCarsController(this);
         mPlayerCarController = new PlayerCarController(this, mCarsView);
+        mPlayerCarController.initSensorManager();
+        mCollisionDetector = new CollisionDetector();
     }
 
     public void start() {
         mGameController = GameContext.getGameController();
         mScoreboardController = GameContext.getScoreboardController();
-        mCollisionDetector = new CollisionDetector();
-        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            mSensorManager = (SensorManager) mGameController.getSystemService(Context
-                    .SENSOR_SERVICE);
-        }
-        startSensorManager();
+
+        mPlayerCarController.initSensorManager();
+        mPlayerCarController.startSensorManager();
         mPlayerCarController.registerTouchListener();
 
         mBotCurrentSpeed = mBotMinSpeed;
@@ -62,37 +51,15 @@ public class CarsController implements SensorEventListener {
         }
     };
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING && event.sensor.getType() ==
-                Sensor.TYPE_ACCELEROMETER) {
-            if (Math.abs(event.values[0]) < 1) {
-                return;
-            }
-            boolean turnLeft = event.values[0] > 0;
-            mCarsView.updatePlayerCarView(turnLeft);
-            mCarsView.reDraw();
-            detectCollision();
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 
     public void startSensorManager() {
-        if (GameContext.getCurrentRaceStatus() == RaceStatus.PLAYING) {
-            mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
-                    .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-        }
+        mPlayerCarController.startSensorManager();
 
     }
 
     public void stopSensorManager() {
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(this);
-        }
+        mPlayerCarController.stopSensorManager();
+
     }
 
     public void updateRoadView() {
@@ -158,7 +125,7 @@ public class CarsController implements SensorEventListener {
         mCarsView.setBotCarLeftEnd(botCarNewLeftPosition);
     }
 
-    private void detectCollision() {
+    protected void detectCollision() {
         if (isCollisionHappens()) {
             resetGame();
             mCarsView.reDraw();
@@ -175,8 +142,8 @@ public class CarsController implements SensorEventListener {
     private void resumeGameAfterRefresh() {
         GameContext.setCurrentRaceStatus(RaceStatus.PLAYING);
         mBotCurrentSpeed = mBotMinSpeed;
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
-                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        mPlayerCarController.registerSensorManagerListener();
+
     }
 
     private void refreshPlayerCar() {
@@ -192,9 +159,8 @@ public class CarsController implements SensorEventListener {
     }
 
     private void stopListenersAndSensors() {
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(this);
-        }
+        mPlayerCarController.stopListenersAndSensors();
+
     }
 
     private void resetEverythingExceptPlayerCar() {
@@ -208,7 +174,8 @@ public class CarsController implements SensorEventListener {
     private boolean isCollisionHappens() {
         Rect playerCarBounds = mCarsView.getPlayerCarBounds();
         Rect botCarBounds = mCarsView.getBotCarBounds();
-        return mCollisionDetector.areIntersected(playerCarBounds, botCarBounds);
+        return playerCarBounds != null && botCarBounds != null && mCollisionDetector
+                .areIntersected(playerCarBounds, botCarBounds);
     }
 
     public void pause() {
@@ -220,16 +187,10 @@ public class CarsController implements SensorEventListener {
     }
 
     public void resume() {
-        if (mSensorManager == null) {
-            mSensorManager = (SensorManager) mGameController.getSystemService(Context
-                    .SENSOR_SERVICE);
-        }
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
-                .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-        mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1);
-        if (mPlayerCarSpeedHandler == null) {
-            mPlayerCarSpeedHandler = new Handler();
-        }
         mPlayerCarController.resume();
+        if (mBotCarSpeedHandler == null) {
+            mBotCarSpeedHandler = new Handler();
+        }
+        mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1);
     }
 }
