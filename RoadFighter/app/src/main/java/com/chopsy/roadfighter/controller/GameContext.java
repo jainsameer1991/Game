@@ -1,5 +1,7 @@
 package com.chopsy.roadfighter.controller;
 
+import android.util.Log;
+
 import com.chopsy.roadfighter.model.RaceStatus;
 
 /**
@@ -58,6 +60,8 @@ public class GameContext {
     }
 
     private static void doTransition() {
+        Log.i("old ", mOldRaceStatus.toString());
+        Log.i("current", mCurrentRaceStatus.toString());
         if (mOldRaceStatus == RaceStatus.NOT_START && mCurrentRaceStatus == RaceStatus.PLAYING) {
             mGameController.start();
             mScoreboardController.start();
@@ -73,8 +77,8 @@ public class GameContext {
         }
     }
 
-//    public static RaceStatus getRaceOldStatus() {
-//        return mOldRaceStatus;
-//    }
+    public static RaceStatus getRaceOldStatus() {
+        return mOldRaceStatus;
+    }
 }
 

@@ -1,5 +1,7 @@
 package com.chopsy.roadfighter.controller;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -91,30 +93,34 @@ public class GameController extends ActionBarActivity {
         backgroundTwo.setTranslationY(mBackgroundTwoTop);
     }
 
-//    @Override
-//    public void onBackPressed() {
-////        willHaveToMakeActivity();
-//    }
-//
-//    private void willHaveToMakeActivity() {
-//        GameContext.setCurrentRaceStatus(RaceStatus.PAUSE);
-//        AlertDialog exitDialog = new AlertDialog.Builder(this)
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .setTitle("Exit Road Fighter?")
-//                .setMessage("Are you sure you want to exit Road Fighter")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        GameContext.setCurrentRaceStatus(RaceStatus.FINISH);
-//                        finish();
-//                    }
-//
-//                })
-//                .setNegativeButton("No", null)
-//                .create();
-//        exitDialog.show();
-////        while(exitDialog.isShowing());
-////        exitDialog.show();
-//        GameContext.setCurrentRaceStatus(GameContext.getRaceOldStatus());
-//    }
+    @Override
+    public void onBackPressed() {
+//        willHaveToMakeActivity();
+        GameContext.setCurrentRaceStatus(RaceStatus.PAUSE);
+        showGameExitDialog();
+    }
+
+    private void showGameExitDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Exit Road Fighter?");
+        alert.setMessage("Are you sure you want to exit Road Fighter?");
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GameContext.setCurrentRaceStatus(GameContext.getRaceOldStatus());
+                dialog.dismiss();
+            }
+        });
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alert.setCancelable(false);
+        alert.show();
+    }
+
 }

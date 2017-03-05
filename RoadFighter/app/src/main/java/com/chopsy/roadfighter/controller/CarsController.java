@@ -313,8 +313,16 @@ public class CarsController implements SensorEventListener, View.OnTouchListener
     }
 
     public void resume() {
+        if (mSensorManager == null) {
+            mSensorManager = (SensorManager) mGameController.getSystemService(Context
+                    .SENSOR_SERVICE);
+        }
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor
                 .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-
+        mBotCarSpeedHandler.postDelayed(botCarSpeedControlAction, 1);
+        if (mPlayerCarSpeedHandler == null) {
+            mPlayerCarSpeedHandler = new Handler();
+        }
+        mPlayerCarSpeedHandler.postDelayed(decreasePlayerCarSpeedAction, timeInterval);
     }
 }
