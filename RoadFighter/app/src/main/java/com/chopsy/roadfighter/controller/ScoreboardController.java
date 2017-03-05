@@ -62,4 +62,28 @@ public class ScoreboardController {
     public void resume() {
         start();
     }
+
+//    public int getTimeLeft() {
+//        return mTimeLeft;
+//    }
+//
+//    public void setTimeLeft(int timeLeft) {
+//        this.mTimeLeft = timeLeft;
+//    }
+//
+//    public int getDistanceLeft() {
+//        return mDistanceLeft;
+//    }
+//
+//    public void setDistanceLeft(int distanceLeft) {
+//        this.mDistanceLeft = distanceLeft;
+//    }
+
+    public int getMaxRaceDistance() {
+        return 1000;
+    }
+
+    public int getMaxRaceTime() {
+        return 10;
+    }
 }

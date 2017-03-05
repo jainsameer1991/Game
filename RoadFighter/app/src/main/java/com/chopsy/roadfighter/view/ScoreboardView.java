@@ -28,10 +28,13 @@ public class ScoreboardView extends AbstractDrawableView {
                 mPaint);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         mPaint.setColor(Color.WHITE);
-        canvas.drawText("Time: " + mScoreboardController.getTime(), 2 * mWidth / 3 + 15,
+        canvas.drawText("Time Left: " + (mScoreboardController.getMaxRaceTime() -
+                        mScoreboardController.getTime())
+                , 2 * mWidth / 3 + 15,
                 mHeight / 6,
                 mPaint);
-        canvas.drawText("Distance: " + mScoreboardController.getDistanceCovered(),
+        canvas.drawText("Distance Left: " + (mScoreboardController.getMaxRaceDistance() -
+                        mScoreboardController.getDistanceCovered()),
                 2 * mWidth / 3 + 15, mHeight / 6 + 40,
                 mPaint);
         canvas.drawText("Speed: " + mScoreboardController.getCurrentSpeed(), 2 * mWidth / 3 + 15,
