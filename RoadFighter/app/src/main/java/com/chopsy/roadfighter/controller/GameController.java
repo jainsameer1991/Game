@@ -95,7 +95,6 @@ public class GameController extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-//        willHaveToMakeActivity();
         GameContext.setCurrentRaceStatus(RaceStatus.PAUSE);
         showGameExitDialog();
     }
@@ -122,5 +121,38 @@ public class GameController extends ActionBarActivity {
         alert.setCancelable(false);
         alert.show();
     }
+
+//    private void showLossDialog() {
+//        AlertDialog.Builder alert = createEndRaceDialog("You Lose");
+//        alert.show();
+//    }
+//
+//    private void showWinDialog() {
+//        AlertDialog.Builder alert = createEndRaceDialog("You win!");
+//        alert.show();
+//    }
+//
+//    private AlertDialog.Builder createEndRaceDialog(String title) {
+//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//        alert.setTitle(title);
+//        alert.setMessage("Do you want to try again?");
+//        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                finish();
+//            }
+//        });
+//        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                GameContext.setCurrentRaceStatus(RaceStatus.NOT_START);
+//                dialog.dismiss();
+//            }
+//        });
+//        alert.setCancelable(false);
+//        return alert;
+//    }
 
 }
