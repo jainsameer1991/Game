@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.chopsy.roadfighter.model.PlayerCar;
 import com.chopsy.roadfighter.model.RaceStatus;
 import com.chopsy.roadfighter.view.CarsView;
 
@@ -11,14 +12,15 @@ public class PlayerCarController implements View.OnTouchListener {
 
     private CarsController mCarsController;
     private CarsView mPlayerCarView;
+    private PlayerCar mPlayerCar;
     private Handler mPlayerCarSpeedHandler;
     private long timeInterval = 500;
-    private int mPlayerCarSpeed;
-    private int mDistanceCovered;
+
 
     public PlayerCarController(CarsController carsController, CarsView playerCarView) {
         mCarsController = carsController;
         mPlayerCarView = playerCarView;
+        mPlayerCar = new PlayerCar();
     }
 
     @Override
@@ -60,14 +62,15 @@ public class PlayerCarController implements View.OnTouchListener {
                     timeInterval = 1;
                 } else {
                     timeInterval -= 5;
-                    mPlayerCarSpeed++;
-                    mCarsController.updateBotCarSpeed(mPlayerCarSpeed / 5 * 10);
-                    mCarsController.updateScoreboardSpeed(mPlayerCarSpeed);
+                    mPlayerCar.setSpeed(mPlayerCar.getSpeed() + 1);
+                    mCarsController.updateBotCarSpeed(mPlayerCar.getSpeed() / 5 * 10);
+                    mCarsController.updateScoreboardSpeed(mPlayerCar.getSpeed());
                 }
 
-                mCarsController.updateBotCarSpeed(mPlayerCarSpeed / 5 * 10);
-                mCarsController.updateBackground(mPlayerCarSpeed);
-                mDistanceCovered += mPlayerCarSpeed * 5;
+                mCarsController.updateBotCarSpeed(mPlayerCar.getSpeed() / 5 * 10);
+                mCarsController.updateBackground(mPlayerCar.getSpeed());
+                mPlayerCar.setDistanceCovered(mPlayerCar.getDistanceCovered() + (mPlayerCar
+                        .getSpeed() * 5));
                 mCarsController.updateScoreboardDistance();
                 mPlayerCarSpeedHandler.postDelayed(this, timeInterval);
                 mCarsController.updateRoadView();
@@ -86,23 +89,24 @@ public class PlayerCarController implements View.OnTouchListener {
                     mPlayerCarSpeedHandler.removeCallbacks(decreasePlayerCarSpeedAction);
                     mPlayerCarSpeedHandler.removeCallbacks(increasePlayerCarSpeedAction);
                     timeInterval = 500;
-                    mPlayerCarSpeed = 0;
+                    mPlayerCar.setSpeed(0);
                     mCarsController.updateRoadView();
-                    mCarsController.updateScoreboardSpeed(mPlayerCarSpeed);
-                    mCarsController.updateBotCarSpeed(mPlayerCarSpeed / 500 * 10);
+                    mCarsController.updateScoreboardSpeed(mPlayerCar.getSpeed());
+                    mCarsController.updateBotCarSpeed(mPlayerCar.getSpeed() / 500 * 10);
                     mPlayerCarSpeedHandler = null;
                 } else {
                     timeInterval += 20;
-                    mDistanceCovered += mPlayerCarSpeed * 20;
-                    mPlayerCarSpeed -= 4;
-                    if (mPlayerCarSpeed < 1) {
-                        mPlayerCarSpeed = 1;
+                    mPlayerCar.setDistanceCovered(mPlayerCar.getDistanceCovered() + (mPlayerCar
+                            .getSpeed() * 20));
+                    mPlayerCar.setSpeed(mPlayerCar.getSpeed() - 4);
+                    if (mPlayerCar.getSpeed() < 1) {
+                        mPlayerCar.setSpeed(1);
                     }
-                    mCarsController.updateBotCarSpeed(mPlayerCarSpeed / 5 * 10);
-                    mCarsController.updateBackground(mPlayerCarSpeed);
+                    mCarsController.updateBotCarSpeed(mPlayerCar.getSpeed() / 5 * 10);
+                    mCarsController.updateBackground(mPlayerCar.getSpeed());
                     mCarsController.updateScoreboardDistance();
                     mCarsController.updateRoadView();
-                    mCarsController.updateScoreboardSpeed(mPlayerCarSpeed);
+                    mCarsController.updateScoreboardSpeed(mPlayerCar.getSpeed());
                     mPlayerCarSpeedHandler.postDelayed(this, timeInterval);
                 }
             }
@@ -128,6 +132,6 @@ public class PlayerCarController implements View.OnTouchListener {
     }
 
     public int getDistanceCovered() {
-        return mDistanceCovered;
+        return mPlayerCar.getDistanceCovered();
     }
 }
